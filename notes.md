@@ -25,12 +25,16 @@ export class UserCardComponent {
     @Input() user!:User;
     @Ouput() select = new EventEmitter<User>();
 
+    // this because it's a class?
+    // all components are classes?
     onClick(){
         this.select.emit(this.user)
     }
 }
 
 ```
+
+- What is this weird format?
 
 ```html
 <!-- template -->
@@ -54,6 +58,7 @@ export class LoginForm {}
 ## 3. Dependency injection (DI)
 
 - Angular relies heavily on DI. This is quite different from React
+  - What is DI?
 - This avoid prop drilling and custom context managers
 
 ```js
@@ -74,6 +79,7 @@ constructor(private auth: AuthService){}
 - Two-way bind: `[(ngModel)]="form.email"`
 
 - Structure directives (similar to React conditionals/map)
+  - What is ngIf and ngFor?
 
 ```html
 <div *ngIf="isLoggedIn">Welcome</div>
@@ -99,4 +105,65 @@ increment(){
 ```html
 <!-- template -->
 <p>{{ count() }}</p>
+```
+
+## 6. Routing
+
+- First-party and declarative
+
+```js
+export const routes: Router = [
+  {
+    path: "users",
+    component: UsersPage,
+  },
+];
+```
+
+- Template navigation
+
+```html
+<a routerLink="/users">Users</a> <router-outlet />
+```
+
+- What is router outlet?
+
+## 7. Forms
+
+Paradigms:
+
+- Template-driven forms: simple, but less scalable
+- Reactive forms? strongly typed, controlled, scalable
+
+```js
+// - Reactive
+form = new FormGroup({
+  email: new FormControl("", Validators.required),
+});
+```
+
+```html
+<!-- Template -->
+<input [formControl]="form.controls.email" />
+```
+
+## 8. Pipes
+
+- Transform values in the template.
+- Good for formatting
+
+```html
+<p>{{dateValue | date:"short"}}</p>
+<p>{{price | curreny:"EUR"}}</p>
+```
+
+- Custom pipe
+
+```js
+@Pipe({ name: "upper" })
+export class UpperPipe implements PipeTransform {
+  transform(val: string) {
+    return val.toUpperCase();
+  }
+}
 ```
