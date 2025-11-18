@@ -167,3 +167,43 @@ export class UpperPipe implements PipeTransform {
   }
 }
 ```
+
+## 9. HttpClient
+
+- Built-in, type, observable-based
+  - Is this how we fetch data?
+
+```ts
+getUsers(): Observable<User[]>{
+    return this.http.get<User[]>("/api/users")
+}
+```
+
+## 10. Observables & RxJS
+
+- Steepest learning curve for React devs
+- Angular uses Observables by default, not promises
+- Typical operators:
+  - map
+  - switchMap
+  - tap
+  - debounceTime
+  - catchError
+
+```js
+// what the hell?
+users$ = this.route.params.pipe(
+  switchMap((params) => this.api.getUsers(params["id"]))
+);
+```
+
+```html
+<div *ngIf="users$ | async as users">...</div>
+```
+
+## 11. Structure
+
+- Clear separation of:
+  - components: UI
+  - services: logic, data, business rules
+  - models: types/interfaces
