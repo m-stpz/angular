@@ -5,6 +5,23 @@
 - Opinionated structure
   - Modules -> components -> templates -> services
 
+## Benefits of Angular
+
+- Fast development
+- Faster code generation (CLI)
+- Unit-tests ready
+- Opinionated
+- Code reusability
+
+## Differences with React
+
+| Feature     | React          | Angular                |
+| ----------- | -------------- | ---------------------- |
+| Definition  | library        | framework              |
+| CLI         | no             | yes                    |
+| Packages    | all 3rd-partys | fundamentals 1st-party |
+| Consistency | little         | much                   |
+
 ## Core concepts
 
 ### 1. Components
@@ -41,7 +58,7 @@ export class UserCardComponent {
 <div (click)="onClick()">{{ user.name }}</div>
 ```
 
-## 2. Standalone Components (modern Angular)
+### 2. Standalone Components (modern Angular)
 
 - Angular is moving toward module-less architecture
 - Import deps inside the component
@@ -55,7 +72,7 @@ export class UserCardComponent {
 export class LoginForm {}
 ```
 
-## 3. Dependency injection (DI)
+### 3. Dependency injection (DI)
 
 - Angular relies heavily on DI. This is quite different from React
   - What is DI?
@@ -71,7 +88,7 @@ export class AuthService {
 constructor(private auth: AuthService){}
 ```
 
-## 4. Templates & Directives
+### 4. Templates & Directives
 
 - Interpolation: `{{value}}`
 - Property binding: `[src]="imageUrl`
@@ -86,7 +103,7 @@ constructor(private auth: AuthService){}
 <div *ngFor="let item of list">{{item}}</div>
 ```
 
-## 5. Change detection
+### 5. Change detection
 
 - React: hooks, state, VDOM
 - Angular:
@@ -107,7 +124,7 @@ increment(){
 <p>{{ count() }}</p>
 ```
 
-## 6. Routing
+### 6. Routing
 
 - First-party and declarative
 
@@ -128,7 +145,7 @@ export const routes: Router = [
 
 - What is router outlet?
 
-## 7. Forms
+### 7. Forms
 
 Paradigms:
 
@@ -147,7 +164,7 @@ form = new FormGroup({
 <input [formControl]="form.controls.email" />
 ```
 
-## 8. Pipes
+### 8. Pipes
 
 - Transform values in the template.
 - Good for formatting
@@ -168,7 +185,7 @@ export class UpperPipe implements PipeTransform {
 }
 ```
 
-## 9. HttpClient
+### 9. HttpClient
 
 - Built-in, type, observable-based
   - Is this how we fetch data?
@@ -179,7 +196,7 @@ getUsers(): Observable<User[]>{
 }
 ```
 
-## 10. Observables & RxJS
+### 10. Observables & RxJS
 
 - Steepest learning curve for React devs
 - Angular uses Observables by default, not promises
@@ -201,9 +218,18 @@ users$ = this.route.params.pipe(
 <div *ngIf="users$ | async as users">...</div>
 ```
 
-## 11. Structure
+### 11. Structure
 
 - Clear separation of:
   - components: UI
   - services: logic, data, business rules
   - models: types/interfaces
+
+## Creating angular app
+
+```bash
+npm install -g @angular/cli # install the cli globally
+ng --version # check the cli version
+ng new first-ng-app # create app
+ng new first-ng-app --inline-style --inline-template ## create app with config
+```
