@@ -1,5 +1,6 @@
 import { Component, signal } from '@angular/core';
 import { GreetingComponent } from '../components/greeting/greeting.component';
+import { User } from '../user.models';
 
 @Component({
   selector: 'app-home',
@@ -9,8 +10,12 @@ import { GreetingComponent } from '../components/greeting/greeting.component';
 })
 export class HomeComponent {
   // this will be passed from parent to child (home -> greeting)
-  message = signal('Hello world!');
-  number = signal(10);
-  object = signal({ name: 'Mateus', lastName: 'Strappazzon' });
-  isMarried = signal(true);
+  message = 'Hello';
+  number = 42;
+  person: User = {
+    name: 'Mateus',
+    age: 29,
+    isMarried: true,
+  };
+  skills = ['Software', 'Analytical Thinking', 'Communication'];
 }

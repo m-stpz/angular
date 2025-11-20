@@ -150,6 +150,53 @@ class MyComponent {
 }
 ```
 
+### 1.3 Passing Data From Parent To Child
+
+1. Define the typed inputs in the child
+
+```ts
+@Component({
+  selector: "child-component",
+  ...
+})
+export Class ChildComponent {
+  // here we define what the child accepts
+  @Input() message!: string; // receive smth from outside
+  @Input() number!: number;
+  @Input() person!: User; // models/users.models.ts
+}
+```
+
+2. Pass values from parent template
+
+```html
+<!-- Parent html -->
+<child-component
+  [whatChildExpects]="whatParentPasses"
+  [childInput]="parentPassing"
+/>
+```
+
+3. Initialize values on parent
+
+```js
+@Component({
+  selector: "parent-component",
+  imports:[ChildComponent] // imports the child
+  ...
+})
+export Class ParentComponent {
+  // define what we send
+  message = "Hello, from parent",
+  number = 42,
+  person = {
+    name: ...
+    age: ...
+    isMarried: ...
+  }
+}
+```
+
 ### 2. Standalone Components (modern Angular)
 
 - Angular is moving toward module-less architecture
@@ -202,6 +249,7 @@ constructor(private auth: AuthService){}
   - Zone.js triggers change detection
   - Signals (modern Angular) improve reactivity and granularity
     - The future of data binding, so use it as a best practie
+    - Signal is good when the data needs to react
   - Rarely needs manual optimization
 
 ```js
