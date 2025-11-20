@@ -7,6 +7,10 @@ import { Component, signal } from '@angular/core';
   styleUrl: './header.component.scss',
 })
 export class HeaderComponent {
+  // using signals
   title = signal('My First Angular');
   author = signal('Mateus Strappazzon');
+
+  // without signals (traditional way)
+  date = '20.11.2025';
 }

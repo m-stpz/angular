@@ -201,6 +201,7 @@ constructor(private auth: AuthService){}
 - Angular:
   - Zone.js triggers change detection
   - Signals (modern Angular) improve reactivity and granularity
+    - The future of data binding, so use it as a best practie
   - Rarely needs manual optimization
 
 ```js
