@@ -61,6 +61,13 @@ export class UserCardComponent {
 
 #### 1.1. Component properties
 
+- selector: how the component is referenced in HTML
+- template / templateUrl: defines the component's UI structure
+- styleUrls: component-scoped styles
+- standalone: enables module-less component usage
+- imports: declares what directives/pipes/modules the template can use
+- changeDetection: controls how Angular updates the UI
+
 1. selector: How you use the component in HTML
 
 ```js
@@ -92,7 +99,34 @@ styleUrls: ["./user-card.component.scss"];
 imports: [CommonModule, FormsModule];
 ```
 
-5. standalone
+5. standalone: marks the component as module-less
+
+- Use this for all new Angular apps
+
+```
+standalone:true
+```
+
+6. providers: Component-level dependency injection
+
+- Useful if a service should have its own instance per component
+- Think "scoped DI"
+
+```js
+providers: [UserService];
+```
+
+7. changeDetection: How angular checks for updates
+
+Options:
+
+- Default: full checks
+- OnPush: (React-like, only update on input changes, signals, observables)
+- use `OnPush` in all performant apps
+
+```js
+changeDetection: ChangeDetectionStrategy.OnPush;
+```
 
 ### 2. Standalone Components (modern Angular)
 
@@ -260,6 +294,15 @@ users$ = this.route.params.pipe(
   - components: UI
   - services: logic, data, business rules
   - models: types/interfaces
+
+### 12. Angular CLI
+
+- Builds, tests, and serves angular apps
+
+```bash
+ng new <app-name>
+ng generate component <component-name>
+```
 
 ## Creating angular app
 
