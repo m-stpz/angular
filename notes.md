@@ -4,6 +4,7 @@
   - It has batteries included: router, HTTP client, DI, forms, state management patterns, build tooling
 - Opinionated structure
   - Modules -> components -> templates -> services
+- There's an angular dev tools
 
 ## Benefits of Angular
 
@@ -33,7 +34,7 @@
 - No JSX. Instead: template syntax with bindings, directives, pipes
 
 ```js
-// component
+// component decorator
 @Component({
     selector:"app-user-card",
     templateUrl:"./user-card.component.html"
@@ -57,6 +58,41 @@ export class UserCardComponent {
 <!-- template -->
 <div (click)="onClick()">{{ user.name }}</div>
 ```
+
+#### 1.1. Component properties
+
+1. selector: How you use the component in HTML
+
+```js
+selector: "app-user-card";
+```
+
+```html
+<app-user-card />
+```
+
+2. template / templateUrl: Defines the component's UI
+
+- template: inline HTML
+- templateUrl: external HTML file
+
+```js
+templateUrl: "./user-card.component.html";
+```
+
+3. styles / stylesUrl
+
+```js
+styleUrls: ["./user-card.component.scss"];
+```
+
+4. imports (standalone components only): Defines which Angular modules/directives/pipes this component can use
+
+```js
+imports: [CommonModule, FormsModule];
+```
+
+5. standalone
 
 ### 2. Standalone Components (modern Angular)
 
@@ -232,4 +268,18 @@ npm install -g @angular/cli # install the cli globally
 ng --version # check the cli version
 ng new first-ng-app # create app
 ng new first-ng-app --inline-style --inline-template ## create app with config
+```
+
+```json
+npm start
+npm run build
+npm test
+```
+
+### Main files
+
+```
+src/index.html: entry point
+main.ts
+styles.scss
 ```
