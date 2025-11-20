@@ -3,8 +3,13 @@
 - Angular is Framework, not a library
   - It has batteries included: router, HTTP client, DI, forms, state management patterns, build tooling
 - Opinionated structure
+
   - Modules -> components -> templates -> services
+
+  ## Tools
+
 - There's an angular dev tools
+- VS Code extension: Angular Language Service: Editor services for Angular templates
 
 ## Benefits of Angular
 
@@ -300,8 +305,9 @@ users$ = this.route.params.pipe(
 - Builds, tests, and serves angular apps
 
 ```bash
-ng new <app-name>
-ng generate component <component-name>
+ng new <app-name> # start app
+ng generate component <component-name> # create component
+ng serve
 ```
 
 ## Creating angular app
