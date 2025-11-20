@@ -133,6 +133,23 @@ Options:
 changeDetection: ChangeDetectionStrategy.OnPush;
 ```
 
+#### 1.2. Data-binding
+
+- Binding data between the component TS class and the component's template
+
+```js
+import { Component, signal } from "@angular/core";
+
+@Component({
+    ...,
+    template: `<p>Some variable {{myVar()}}</p>`
+})
+
+class MyComponent {
+    myVar = signal('some value')
+}
+```
+
 ### 2. Standalone Components (modern Angular)
 
 - Angular is moving toward module-less architecture

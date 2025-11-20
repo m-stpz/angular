@@ -9,13 +9,15 @@ import { FooterComponent } from './components/footer/footer.component';
   imports: [RouterOutlet, HomeComponent, HeaderComponent, FooterComponent],
   template: `
     <app-header />
-    <app-home />
-    <app-footer />
+    <main>
+      <app-home />
+      <app-footer />
+    </main>
   `,
   styles: [
     `
-      * {
-        background-color: red;
+      main {
+        padding-inline: 16px;
       }
     `,
   ],
