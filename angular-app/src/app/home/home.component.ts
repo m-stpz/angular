@@ -18,4 +18,12 @@ export class HomeComponent {
     isMarried: true,
   };
   skills = ['Software', 'Analytical Thinking', 'Communication'];
+
+  handleClick() {
+    alert('hey');
+  }
+
+  handleType(e: KeyboardEvent) {
+    console.log(e.key);
+  }
 }

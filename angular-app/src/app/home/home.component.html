@@ -5,3 +5,11 @@
   [personObject]="person"
   [skills]="skills"
 />
+<app-greeting
+  [childMessage]="'hey there'"
+  [number]="34"
+  [personObject]="{ name: 'test', age: 99, isMarried: false }"
+  [skills]="['running', 'jumping']"
+/>
+<button (click)="handleClick()">click me</button>
+<input (keydown)="handleType($event)" />

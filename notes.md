@@ -57,13 +57,6 @@ export class UserCardComponent {
 
 ```
 
-- What is this weird format?
-
-```html
-<!-- template -->
-<div (click)="onClick()">{{ user.name }}</div>
-```
-
 #### 1.1. Component properties
 
 - selector: how the component is referenced in HTML
@@ -150,7 +143,7 @@ class MyComponent {
 }
 ```
 
-### 1.3 Passing Data From Parent To Child
+#### 1.3 Passing Data From Parent To Child
 
 1. Define the typed inputs in the child
 
@@ -193,6 +186,27 @@ export Class ParentComponent {
     name: ...
     age: ...
     isMarried: ...
+  }
+}
+```
+
+#### 1.4 Event handlers
+
+- Event binding: `(eventName)="handler()"`
+
+```html
+<button (click)="handleClick()"></button>
+<input (keydown)="handleType($event)" />
+```
+
+```js
+export class Component {
+  handleClick() {
+    console.log("hey");
+  }
+
+  handleType(e: KeyboardEvent) {
+    console.log(e.key);
   }
 }
 ```
