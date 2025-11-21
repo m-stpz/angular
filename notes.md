@@ -258,33 +258,7 @@ constructor(private auth: AuthService){}
 <div *ngFor="let item of list">{{item}}</div>
 ```
 
-#### 4.1 Structural directives in depth
-
-- Directives that change the DOM layout by adding or removing DOM elements
-- For example, rendering an array (.map in React)
-- ng is pronounced `ang`, not `N-G`
-
-```js
-export class ComponentWithList {
-  links: [
-    { label: "Home", path: "" },
-    { label: "Contact", path: "contact" },
-    { label: "About", path: "about" }
-  ];
-}
-```
-
-```html
-<div>
-  <ul>
-    <!-- structural directive -->
-    <li *ngFor="let link of links">
-      <!-- routerLink = <Link to=""> in react -->
-      <a [routerLink]="link.path">{{link.label}}</a>
-    </li>
-  </ul>
-</div>
-```
+> For more info go to `structural_directive_notes.md`
 
 ### 5. Change detection
 
