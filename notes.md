@@ -211,6 +211,9 @@ export class Component {
 }
 ```
 
+<!-- https://www.youtube.com/watch?v=oUmVFHlwZsI&list=PL2sQdFoGnLIhLU0Xdsh_ZY1KzGHf4uPMg -->
+<!-- 38:23 -->
+
 ### 2. Standalone Components (modern Angular)
 
 - Angular is moving toward module-less architecture
@@ -387,6 +390,8 @@ users$ = this.route.params.pipe(
 ```bash
 ng new <app-name> # start app
 ng generate component <component-name> # create component
+ng g c <path>/<name> # shorthand
+  # example: ng g c components/counter
 ng serve
 ```
 
