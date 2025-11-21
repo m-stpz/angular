@@ -6,11 +6,11 @@ import { FooterComponent } from './components/footer/footer.component';
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet, HomeComponent, HeaderComponent, FooterComponent],
+  imports: [RouterOutlet, HeaderComponent, FooterComponent],
   template: `
     <app-header />
     <main>
-      <app-home />
+      <router-outlet />
       <app-footer />
     </main>
   `,
