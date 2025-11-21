@@ -6,5 +6,14 @@
 
       <div class="">{{ date }}</div>
     </div>
+
+    <div>
+      <ul>
+        <!-- needs the CommonModules imported -->
+        <li *ngFor="let link of links">
+          <a [routerLink]="link.path">{{ link.label }}</a>
+        </li>
+      </ul>
+    </div>
   </nav>
 </header>

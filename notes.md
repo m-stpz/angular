@@ -252,11 +252,38 @@ constructor(private auth: AuthService){}
 - Two-way bind: `[(ngModel)]="form.email"`
 
 - Structure directives (similar to React conditionals/map)
-  - What is ngIf and ngFor?
 
 ```html
 <div *ngIf="isLoggedIn">Welcome</div>
 <div *ngFor="let item of list">{{item}}</div>
+```
+
+#### 4.1 Structural directives in depth
+
+- Directives that change the DOM layout by adding or removing DOM elements
+- For example, rendering an array (.map in React)
+- ng is pronounced `ang`, not `N-G`
+
+```js
+export class ComponentWithList {
+  links: [
+    { label: "Home", path: "" },
+    { label: "Contact", path: "contact" },
+    { label: "About", path: "about" }
+  ];
+}
+```
+
+```html
+<div>
+  <ul>
+    <!-- structural directive -->
+    <li *ngFor="let link of links">
+      <!-- routerLink = <Link to=""> in react -->
+      <a [routerLink]="link.path">{{link.label}}</a>
+    </li>
+  </ul>
+</div>
 ```
 
 ### 5. Change detection
@@ -287,12 +314,28 @@ increment(){
 - First-party and declarative
 
 ```js
+// app.routes
 export const routes: Router = [
   {
     path: "users",
-    component: UsersPage,
+    // component: UsersPage, // no lazy-load
+    // lazy load
+    loadComponent: () => import("./path-to-component").then((m) => m.Component),
   },
 ];
+
+// app.component
+@Component({
+  selector:"app-root",
+  imports:[RouterOutlet],
+  template: `
+    <app-header/>
+    <main>
+      <router-outlet />
+    </main>
+  `,
+  styles: []
+})
 ```
 
 - Template navigation
