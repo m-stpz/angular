@@ -65,14 +65,63 @@ export class ComponentWithList {
 }
 ```
 
-3. `
-
----
+3. `ngSwitch`, `ngSwitchCase`, `ngSwitchDefault` - switch case rendering
 
 ```html
-
+<div [ngSwitch]="status">
+  <p *ngSwitchCase="'loading'">Loading...</p>
+  <p *ngSwitchCase="'error'">Error</p>
+  <p *ngSwitchDefault=>Ready</p>
+</div>
 ```
 
 ```jsx
+switch (status) {
+  case "loading":
+    return <p>Loading..</p>;
+  case "error":
+    return <p>Error</p>;
+  default:
+    return <p>Ready</p>;
+}
+```
 
+4. `ngTemplate`, `<ng-template>` - invisible template blocks
+
+Conceptually similar to
+
+```jsx
+<></>
+```
+
+5. `ngComponentOutlet` - dynamic components
+
+- Dynamically render a component at run time
+
+```html
+<ng-container *ngComponentOutlet="componentToRender"></ng-container>
+```
+
+```jsx
+const component = componentToRender;
+
+return <Component />;
+```
+
+6. `ngIf; else` - conditional with fallback block
+
+```html
+<!-- else <tag> -->
+<div *ngIf="user; else loading">{{user.name}}</div>
+
+<!-- then, we add the #<tag> to an ng-template -->
+<ng-template #loading>
+  <p>loading</p>
+</ng-template>
+```
+
+```jsx
+{
+  user ? <div>{user.name}</div> : <p>Loading</p>;
+}
 ```
