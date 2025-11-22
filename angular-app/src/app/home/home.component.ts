@@ -1,6 +1,6 @@
 import { Component, signal } from '@angular/core';
 import { GreetingComponent } from '../components/greeting/greeting.component';
-import { User } from '../user.models';
+import { User } from '../models/user.models';
 import { CounterComponent } from '../components/counter/counter.component';
 
 @Component({

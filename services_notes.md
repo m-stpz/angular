@@ -9,7 +9,19 @@
 
 Services is logic, not UI (container/smart component)
 
+```bash
+ng g service services/<service>
+```
+
 - They are meant to be injected into components
+- They can either be injected in the component, or globally
+
+```ts
+@Injectable({
+    providedIn:"root" // makes it global
+    // if we want to be localized in only the components we import it, we remove this
+})
+```
 
 1. Creating a service
 

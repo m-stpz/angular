@@ -1,5 +1,5 @@
 import { Component, Input, input } from '@angular/core';
-import { User } from '../../user.models';
+import { User } from '../../models/user.models';
 
 @Component({
   selector: 'app-greeting',
