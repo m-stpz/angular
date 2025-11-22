@@ -1,6 +1,15 @@
 <ul>
-  <li *ngFor="let todo of todos">
+  <!-- when accessing a signal remember `()` -->
+  <!-- <li *ngFor="let todo of todos()">
+    <span>{{ todo.title }}</span>
+    <span>{{ todo.completed ? "done" : "to do" }}</span>
+  </li> -->
+
+  <!-- instead of tracking the index, track something unique, similar to the key in React -->
+  @for (todo of todos(); track todo.id) {
+  <li>
     <span>{{ todo.title }}</span>
     <span>{{ todo.completed ? "done" : "to do" }}</span>
   </li>
+  }
 </ul>
