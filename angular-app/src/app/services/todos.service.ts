@@ -39,4 +39,9 @@ export class TodosService {
   ];
 
   constructor() {}
+
+  // instead of grabbing it directly, expose through a getter
+  getTodos(): Todo[] {
+    return this.todos;
+  }
 }

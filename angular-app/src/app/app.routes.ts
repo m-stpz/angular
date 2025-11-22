@@ -23,4 +23,10 @@ export const routes: Routes = [
     loadComponent: () =>
       import('./contact/contact.component').then((m) => m.ContactComponent),
   },
+  {
+    path: 'todos',
+    pathMatch: 'full',
+    loadComponent: () =>
+      import('./todos/todos.component').then((m) => m.TodosComponent),
+  },
 ];

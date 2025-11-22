@@ -22,5 +22,6 @@ export class HeaderComponent {
     { label: 'Home', path: '' },
     { label: 'Contact', path: 'contact' },
     { label: 'About', path: 'about' },
+    { label: 'Todos', path: 'todos' },
   ];
 }
