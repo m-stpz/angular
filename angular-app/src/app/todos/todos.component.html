@@ -13,9 +13,6 @@
 
   <!-- instead of tracking the index, track something unique, similar to the key in React -->
   @for (todo of todos(); track todo.id) {
-  <li class="todos__item">
-    <input id="todo-{{ todo.id }}" type="checkbox" [value]="todo.completed" />
-    <label for="todo-{{ todo.id }}">{{ todo.title }}</label>
-  </li>
+  <app-todo-item [todo]="todo" />
   }
 </ul>

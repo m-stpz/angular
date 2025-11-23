@@ -3,10 +3,11 @@ import { TodosService } from '../services/todos.service';
 import { CommonModule } from '@angular/common';
 import { Todo } from '../models/todo.models';
 import { catchError } from 'rxjs';
+import { TodoItemComponent } from '../components/todo-item/todo-item.component';
 
 @Component({
   selector: 'app-todos',
-  imports: [CommonModule],
+  imports: [CommonModule, TodoItemComponent],
   templateUrl: './todos.component.html',
   styleUrl: './todos.component.scss',
 })

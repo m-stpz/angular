@@ -1,0 +1,4 @@
+<li class="todos__item" [ngStyle]="{ color: 'red' }">
+  <input id="todo-{{ todo().id }}" type="checkbox" [value]="todo().completed" />
+  <label for="todo-{{ todo().id }}">{{ todo().title }}</label>
+</li>
