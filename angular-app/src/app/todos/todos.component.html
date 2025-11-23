@@ -1,5 +1,9 @@
 <h2>Todos list</h2>
 
+@if(!todos().length){
+<p>loading...</p>
+}
+
 <ul class="todos">
   <!-- when accessing a signal remember `()` -->
   <!-- <li *ngFor="let todo of todos()">
