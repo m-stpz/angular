@@ -6,7 +6,7 @@ import { TodosComponent } from '../todos/todos.component';
 
 @Component({
   selector: 'app-home',
-  imports: [GreetingComponent, CounterComponent, TodosComponent],
+  imports: [GreetingComponent, CounterComponent],
   templateUrl: './home.component.html',
   styleUrl: './home.component.scss',
 })

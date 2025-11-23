@@ -1,6 +1,6 @@
 <h2>Todos list</h2>
 
-<ul>
+<ul class="todos">
   <!-- when accessing a signal remember `()` -->
   <!-- <li *ngFor="let todo of todos()">
     <span>{{ todo.title }}</span>
@@ -9,9 +9,9 @@
 
   <!-- instead of tracking the index, track something unique, similar to the key in React -->
   @for (todo of todos(); track todo.id) {
-  <li>
-    <span>{{ todo.title }}</span>
-    <span>{{ todo.completed ? "done" : "to do" }}</span>
+  <li class="todos__item">
+    <input id="todo-{{ todo.id }}" type="checkbox" [value]="todo.completed" />
+    <label for="todo-{{ todo.id }}">{{ todo.title }}</label>
   </li>
   }
 </ul>
