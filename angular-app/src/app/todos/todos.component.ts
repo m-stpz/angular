@@ -28,4 +28,6 @@ export class TodosComponent {
         this.todos.set(todos);
       });
   }
+
+  updateTodoItem(todoItem: Todo) {}
 }
