@@ -13,6 +13,6 @@
 
   <!-- instead of tracking the index, track something unique, similar to the key in React -->
   @for (todo of todos(); track todo.id) {
-  <app-todo-item [todo]="todo" />
+  <app-todo-item [todo]="todo" (todoToggled)="updateTodoItem($event)" />
   }
 </ul>

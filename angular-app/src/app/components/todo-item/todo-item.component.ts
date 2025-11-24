@@ -10,9 +10,10 @@ import { HighlightCompletedTodoDirective } from '../../directives/highlight-comp
   styleUrl: './todo-item.component.scss',
 })
 export class TodoItemComponent {
-  todo = input.required<Todo>();
-  todoToggled = output<Todo>();
+  todo = input.required<Todo>(); // parent sends this
+  todoToggled = output<Todo>(); // parent will be listening to this
 
+  // this will be used in the .html to react to events
   todoClicked() {
     this.todoToggled.emit(this.todo());
   }

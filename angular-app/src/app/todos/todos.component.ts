@@ -13,7 +13,6 @@ import { TodoItemComponent } from '../components/todo-item/todo-item.component';
 })
 export class TodosComponent {
   todoService = inject(TodosService);
-  // todos = this.todoService.getTodos();
   todos = signal<Todo[]>([]); // init with empty
 
   ngOnInit() {
@@ -29,5 +28,16 @@ export class TodosComponent {
       });
   }
 
-  updateTodoItem(todoItem: Todo) {}
+  // what todo with the information
+  updateTodoItem(todoItem: Todo) {
+    this.todos.update((todos) =>
+      todos.map((todo) => {
+        if (todo.id === todoItem.id) {
+          return { ...todo, completed: !todo.completed };
+        }
+
+        return todo;
+      })
+    );
+  }
 }
