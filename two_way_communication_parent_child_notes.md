@@ -15,8 +15,8 @@ Parent -> passes data to child -> child notifies data change -> Parent updates -
 Child triggers events. Parent handles state
 ```
 
-- Control: Parent
-- Ownership: Child
+- Control: Child
+- Ownership: Parent
 - Control and ownership belong to different components
 
 ### 1. Parent -> Child (@Input / input())
@@ -129,4 +129,73 @@ export function Parent() {
 export function Child({ onClick }) {
   return <button onClick={onClick}>click me</button>;
 }
+```
+
+## Angular Example
+
+### 1. Parent: owns the state, updates the state
+
+```ts
+// parent.component.ts
+@Component({
+  selector:"app-parent",
+  ...
+})
+export class ParentComponent{
+  // parent owns the state
+  selectedItem = signal<Item>({})
+
+// parent receives the update from the child and does something with it
+  onChildItemChange(updatedItem:item){
+    this.selectedItem.set(updatedItem)
+  }
+}
+```
+
+```html
+<!-- parent.component.html -->
+<app-child
+  [item]="selectedItem()"
+  (itemChanged)="onChildItemChange($event)"
+></app-child>
+```
+
+- item: what the child expects
+- selectedItem(): signal the parent is sending 'down'
+- itemChanged: output defined in child
+- onChildItemChange: function defined in parent
+
+### 2. Child: receives data, emits events
+
+- Output: exists only to notify the parent
+
+```ts
+@Component({
+  selector:"app-child",
+  ...
+})
+export class ChildComponent(){
+  // input coming from parent
+  item = input<Item>() // Parent -> Child
+  // goes back to parent
+  itemChanged = output<Item>() // Child -> Parent
+
+  notifyParent(item: Item){
+    this.itemChanged.emit(this.item())
+  }
+}
+```
+
+```html
+<button (click)="notifyParent()">Toggle: {{item().name}}</button>
+```
+
+```
+Not related with Angular, but an cool tip:
+- Open dev tools
+- Go to source tab
+- CMD + P: to search any file
+- Add a breaking point to debug
+
+CMD + P is a really cool command on the source to seach any file we want. Amazing for debugging.
 ```
