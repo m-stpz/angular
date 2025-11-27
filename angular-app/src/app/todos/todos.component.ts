@@ -4,16 +4,19 @@ import { CommonModule } from '@angular/common';
 import { Todo } from '../models/todo.models';
 import { catchError } from 'rxjs';
 import { TodoItemComponent } from '../components/todo-item/todo-item.component';
+import { FilterTodosPipe } from '../pipes/filter-todos.pipe';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-todos',
-  imports: [CommonModule, TodoItemComponent],
+  imports: [CommonModule, TodoItemComponent, FilterTodosPipe, FormsModule],
   templateUrl: './todos.component.html',
   styleUrl: './todos.component.scss',
 })
 export class TodosComponent {
   todoService = inject(TodosService);
   todos = signal<Todo[]>([]); // init with empty
+  searchTerm = signal('');
 
   ngOnInit() {
     this.todoService
