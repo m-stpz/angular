@@ -1,5 +1,5 @@
 - [] Angular
-  - [] fundamentals
+  - [x] fundamentals
   - [] modern Angular
   - [] creating basic functionalities
     - [] crud operations
@@ -9,7 +9,8 @@
     - [] data fetching
     - [] searching
     - [] global state
-- [] Nxmonorepo (pnpm)
+- [] pnpm
+- [] Nxmonorepo
 - [] UI lib: Angular Material/CDK
 - [] Backend:
   - [] Firebase: Hosting, Functions, Firestore/storage
