@@ -54,7 +54,6 @@ export class UserCardComponent {
         this.select.emit(this.user)
     }
 }
-
 ```
 
 #### 1.1. Component properties
@@ -210,9 +209,6 @@ export class Component {
   }
 }
 ```
-
-<!-- https://www.youtube.com/watch?v=oUmVFHlwZsI&list=PL2sQdFoGnLIhLU0Xdsh_ZY1KzGHf4uPMg -->
-<!-- 38:23 -->
 
 ### 2. Standalone Components (modern Angular)
 
