@@ -11,9 +11,11 @@
     - [] global state
 - [x] pnpm
 - [] NX monorepo
+  - [] nx + angular + nestjs: https://www.youtube.com/watch?v=hWvRzo51YAc
 - [] UI lib: Angular Material/CDK
 - [] Backend:
   - [] Firebase: Hosting, Functions, Firestore/storage
+    - [] Cloud firestore: https://www.youtube.com/watch?v=v_hR4K4auoQ&list=PLl-K7zZEsYLluG5MCVEzXAQ7ACZBCuZgZ
   - [] NestJS/Fastify
   - [] GraphQL Yoga
   - [] Hono for API

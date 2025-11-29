@@ -114,6 +114,45 @@ libs/
 - Libs: shared units (UI, utils, domain logic)
 - They're defined in `project.json`
 
+### 3. Targets
+
+- Each project has targets
+- Targets define what Nx can execute
+
+```json
+{
+  "targets": {
+    "build": {
+      "executor": "@nx/webpack:webpack"
+    },
+    "test": {
+      "executor": "@nx/jest:jest"
+    }
+  }
+}
+```
+
+### 4. Task graph & incremental builds
+
+- Nx analysis project graph
+- It knows what depends on what
+- Result:
+  - Only rebuilds what changed
+  - Only retests affected projects
+  - Only lints what needs linting
+
+### 5. Computation caching
+
+- Nx caches results of operations:
+  - build
+  - test
+  - lint
+  - e2e
+
+```bash
+nx build web
+```
+
 ## Gettings started
 
 1. Install Nx globally with some pkg manager
