@@ -9,7 +9,7 @@
     - [] data fetching
     - [] searching
     - [] global state
-- [] pnpm
+- [x] pnpm
 - [] NX monorepo
 - [] UI lib: Angular Material/CDK
 - [] Backend:
@@ -19,6 +19,9 @@
   - [] Hono for API
   - [] typedi for di
   - [] integrations: Pub/Sub, GCS, Typesense, PSPDFKit, Puppeteer
+    - [] GCS
+    - [] Typesense
+    - [] Puppeteer
 - [] Firestore SDK via repository classes
 - [] Jest via Nx for unit/integration
   - [] Jest for integration

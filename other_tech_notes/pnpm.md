@@ -65,4 +65,14 @@ pnpm -d add -D <pkg>
 pnpm --filter <project> <command> # targets a specific package in a monorepo
     pnpm --filter webapp dev
 pnpm recursive install / pnpm -r install # install across all workspace packages
+
+pnpm -r <command> runs a command across all packages
+```
+
+### Store & Node Modules
+
+```bash
+pnpm store path # shows where the global pnpm store is located
+pnpm store prune # cleans old/unreferences pkgs from the store
+pnpm prune
 ```
