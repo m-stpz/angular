@@ -72,6 +72,20 @@ nx generate @nrwl/react:application <proj-name>
 5. Caching for speed
 
 - It caches build artifacs and deps, significantly reducing build time
+- Ensures only the necessary parts of monorepo is rebuilt
+
+```bash
+# Using cached artifacts for faster builds
+nx build <proj-name>
+```
+
+6. Automatic deps updates
+
+- Through Nx you can automate deps updates
+
+```bash
+nx migrate latest
+```
 
 ## Core concepts
 
@@ -94,3 +108,27 @@ libs/
 ```
 
 ### 2. Projects (apps & libs)
+
+- Nx split code into projects:
+- Apps: runnable (React, Angular, Next.js, Node API)
+- Libs: shared units (UI, utils, domain logic)
+- They're defined in `project.json`
+
+## Gettings started
+
+1. Install Nx globally with some pkg manager
+2. Create a new Nx workspace using the CLI commands
+3. Begin adding your projects, libs, and code to the workspace
+
+```bash
+npm install -g create-nx-workspace
+nx create-nx-workspace <workspace-name> # create workspace
+nx g @nx/react:application <proj-name> # Create application
+
+# Useful commands
+nx run <proj-name>:serve # start the app
+nx run <app>:test # run the unit test
+nx run <app>:lint
+nx run <app>:build
+nx --help
+```
