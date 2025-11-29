@@ -10,7 +10,7 @@
     - [] searching
     - [] global state
 - [] pnpm
-- [] Nxmonorepo
+- [] NX monorepo
 - [] UI lib: Angular Material/CDK
 - [] Backend:
   - [] Firebase: Hosting, Functions, Firestore/storage
@@ -21,6 +21,9 @@
   - [] integrations: Pub/Sub, GCS, Typesense, PSPDFKit, Puppeteer
 - [] Firestore SDK via repository classes
 - [] Jest via Nx for unit/integration
+  - [] Jest for integration
+  - [] Jest for unit tests
+  - [] Jest vs. Cypress
 
 ### Strategy
 
