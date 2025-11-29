@@ -8,32 +8,17 @@
 - Nx stands for "Nrwl Extensions
 - Even though there's some overlap between Nx and Docker, they solve different problems
 
-## Nx vs. Docker
+## What it offers
 
-### Nx
-
-- Nx focuses on building, testing, linting, executing tasks, and organizing a monorepo
-- Its strengths:
-
-  - incremental builds
-  - caching
-  - affected logic
-  - code generation
-  - dependency graph
-  - orchestrating tasks across multiple apps
-
-### Docker
-
-- Docker isolates runtime environments and deps
-- Its strengths
-  - OS-level isolation
-  - Runs services with different runtimes
-  - Ensures consistency across dev environments
-  - Deployment portability
+- Strong monorepo workflows
+- Fast builds (caching + affected)
+- Consistent architecture
+- Scaffolding removes manual setup
+- Good DX (IDE integrations, visual graph)
 
 ## Key features
 
-1. Code sharing:
+1. Code sharing
 
 - Instead of duplicating code or creating shared libs, nx allows referencing and reusing code across various projects
 
@@ -153,6 +138,45 @@ libs/
 nx build web
 ```
 
+### 6. Affected commands
+
+- Nx detects what changed since the last Git revision
+
+```bash
+nx affected:build
+nx affected:test
+nx affected:lint
+```
+
+### 7. Generators (code scaffolding)
+
+- Nx can create boilerplate code aligned with best practices
+- Eliminates manual setup
+
+```bash
+nx g @nx/react:app web
+nx g @nx/react:lib ui
+nx g @nx/react:lib utils
+```
+
+### 8. Executors
+
+- Underlying engine that runs tasks
+- Examples:
+  - webpack executor
+  - Vite executor
+  - Next.js executor
+  - Custom executors
+- You can build your own if needed
+
+### 9. Project Graph
+
+- Visual graph showing deps structure
+
+```bash
+nx graph
+```
+
 ## Gettings started
 
 1. Install Nx globally with some pkg manager
@@ -171,3 +195,26 @@ nx run <app>:lint
 nx run <app>:build
 nx --help
 ```
+
+## Nx vs. Docker
+
+### Nx
+
+- Nx focuses on building, testing, linting, executing tasks, and organizing a monorepo
+- Its strengths:
+
+  - incremental builds
+  - caching
+  - affected logic
+  - code generation
+  - dependency graph
+  - orchestrating tasks across multiple apps
+
+### Docker
+
+- Docker isolates runtime environments and deps
+- Its strengths
+  - OS-level isolation
+  - Runs services with different runtimes
+  - Ensures consistency across dev environments
+  - Deployment portability
