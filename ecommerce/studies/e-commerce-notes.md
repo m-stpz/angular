@@ -22,6 +22,7 @@ npm add --global nx
 npx create-nx-workspace@latest
 nx add @nx/nest
 nx g @nx/nest:app apps/<name>
+nx serve <name>
 ```
 
 ```
