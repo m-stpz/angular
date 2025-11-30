@@ -10,7 +10,9 @@
     - [] searching
     - [] global state
 - [x] pnpm
-- [] NX monorepo
+- [x] NX monorepo
+- [] Tech stack
+  - [] Angular + NestJS: https://www.youtube.com/watch?v=E1wtzB0ZSgQ&t
   - [] nx + angular + nestjs: https://www.youtube.com/watch?v=hWvRzo51YAc
 - [] UI lib: Angular Material/CDK
 - [] Backend:
