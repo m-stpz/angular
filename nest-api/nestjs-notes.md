@@ -52,7 +52,7 @@ Angular and NestJS have:
 
 ## Concepts
 
-### 1. Modules
+### 1. Modules: Groups features
 
 - A NestJS application is a graph made of modules
 
@@ -62,15 +62,36 @@ Angular and NestJS have:
     Module A            Module B
 ```
 
+- It's a container that groups the blcoks of a feature
+  - controllers
+  - services
+  - other providers (guards, pipes, interceptors, repositories)
+  - imported and exported modules
+
 ```ts
 @Module({})
 export class MyModule {}
 ```
 
+```bash
+nest g module <name>
+```
+
+- The import property defines how modules are organized
+
 ### 2. Decorators
 
 - Used to declare what something is and how it should behave
 - Metadata attached to: classes, methods, and params
+
+```ts
+@ClassDecorator()
+class MyClass {
+
+  @MethodDecorator
+  myMethod(@ArgDecorator() myArgs: unknown);
+}
+```
 
 #### 1. @Module()
 
@@ -114,6 +135,59 @@ export class UserController
 ```ts
 @Get(":id")
 findOne(@Param("id") id:string){}
+```
+
+### 3. Controllers: Handles HTTP Requests
+
+- Entry point for incoming HTTP requests
+- Receives the request -> delegates to service -> return the response
+- It shouldn't contain business logic, it's only an interface adapter
+
+```bash
+nest g controller <name>
+```
+
+- They can extract
+  - route params: `@Param()`
+  - query params: `@Query()`
+  - body payload: `@Body()`
+  - headers: `@Headers()`
+  - cookies: `@Req()`
+
+### 4. Services: Handles Business Logic
+
+### 5. DTOs
+
+```ts
+@Controller('users')
+export class UsersController {
+  constructor(private readonly service: UsersService) {}
+
+  @Get()
+  findAll() {
+    return this.service.findAll();
+  }
+
+  @Get(':id')
+  findOne(@Params('id') id: string) {
+    return this.service.findOne(id);
+  }
+
+  @Post()
+  create(@Body() dto: CreateUserDTO) {
+    return this.service.create(dto);
+  }
+
+  @Patch(':id')
+  update(@Param('id') id: string, @Body() dto: CreateUserDTO) {
+    return this.service.update(id, dto);
+  }
+
+  @Delete(':id')
+  delete(@Param('id') id: string) {
+    return this.service.remove(id);
+  }
+}
 ```
 
 ## Commands
