@@ -1,0 +1,135 @@
+# NestJS
+
+![alt text](clean-arc.png)
+
+## NestJS and Angular
+
+NestJS architecture is basically angular transplanted to the backend
+
+- Modules group featurs
+- Decorators declare intent
+- DI glues everything
+- Controllers/Components orchestrate services
+- Pipe/Guards/Interceptors behave the same
+- Same mental model, different domains
+
+### 1. Modules as the main organizational unit
+
+- Both put together and expose building blocks
+  - Group features (AuthModel/UsersModule)
+  - Control imports/exports
+  - Encapsulate domain boundaries
+
+### 2. Depency Injection everywhere
+
+- Both frameworks use DI as the core pattern
+  - Constructor injection
+  - Providers registered in modules
+  - Scopes (singleton, request-scoped)
+
+### 3. Decorator-driven architecture
+
+- Both rely on decorators to declare intent instead of configuration
+  - Angular: @Component(), @Injectable(), @NgModule()
+  - NestJS: @Controller(), @Injectable(), @Module()
+- Declarative, metadata-driven structure
+
+### 4. Thin controllers, fat services
+
+- Controllers/Components handle the interface layer (HTTP or UI)
+- Services hold logic and coordinate data
+
+Angular: Component -> Service
+NestJS: Controller -> Service
+
+### 5. Middleware-like layers
+
+Angular and NestJS have:
+
+- Pipes: transform/validate data
+- Guards: route authorization
+- Interceptors: cross-cutting logic
+
+## Concepts
+
+### 1. Modules
+
+- A NestJS application is a graph made of modules
+
+```
+            Root Module
+            /          \
+    Module A            Module B
+```
+
+```ts
+@Module({})
+export class MyModule {}
+```
+
+### 2. Decorators
+
+- Used to declare what something is and how it should behave
+- Metadata attached to: classes, methods, and params
+
+#### 1. @Module()
+
+- Defines a module and its structure
+
+```ts
+@Module({
+  imports: [],
+  controllers: [UserController],
+  providers: [UserService], // a class with @Injectable
+  exports: [],
+})
+export class UserModule {}
+```
+
+#### 2. @Injectable()
+
+- Marks a class as a provider that can participate in DI
+
+```ts
+@Injectable() // allows this class to be injected into constructors
+export class UserService {}
+```
+
+- Nest can now instantiate and inject it into constructors
+
+#### 3. @Controller()
+
+- Maps a class to a route prefix
+- Defines a controller responsible for incoming HTTP requests
+
+```ts
+@Controller("users")
+export class UserController
+```
+
+#### 4. @Http Route Decorators(): @Get, @Post, @Patch, @Delete
+
+- Attach a method to a specific HTTP verb + path
+
+```ts
+@Get(":id")
+findOne(@Param("id") id:string){}
+```
+
+## Commands
+
+```bash
+npm install -g @nestjs/cli
+
+nest new <app>
+nest g module <module>
+nest g controller <controller>
+nest g service <service>
+nest g resource <resource> # full CRUD: module + controller + service + DTOs
+
+nest start
+nest start --watch # watch mode
+# CTRL + C to stop server
+nest build
+nest info
+```
