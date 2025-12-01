@@ -154,10 +154,6 @@ nest g controller <name>
   - headers: `@Headers()`
   - cookies: `@Req()`
 
-### 4. Services: Handles Business Logic
-
-### 5. DTOs
-
 ```ts
 @Controller('users')
 export class UsersController {
@@ -169,7 +165,7 @@ export class UsersController {
   }
 
   @Get(':id')
-  findOne(@Params('id') id: string) {
+  findOne(@Param('id') id: string) {
     return this.service.findOne(id);
   }
 
@@ -189,6 +185,59 @@ export class UsersController {
   }
 }
 ```
+
+### 4. Services: Handles Business Logic
+
+- The real work the app does
+- It performs:
+  - Database operations/queries
+  - Calling other APIs
+  - applying rules
+  - validating data
+  - transforming data
+  - handling transactions
+  - triggering events
+  - working with files
+
+```ts
+@Injectable() // service is usually @Injectable()
+// this is what we import into the constructor of our controller
+export class UsersService {
+  private users = [];
+
+  findAll() {
+    return this.users;
+  }
+
+  findOne(id: string) {
+    return this.users.find((user) => user.id === id);
+  }
+
+  create(dto: CreateUserDTO) {
+    const user = { id: Date.now().toString(), ...dto };
+    this.users.push(user);
+    return user;
+  }
+
+  update(id, dto: CreateUserDTO) {
+    const user = this.findOne(id);
+
+    if (!user) {
+      return null;
+    }
+
+    Object.assign(user, dto);
+    return user;
+  }
+
+  remove(id: string) {
+    this.users = this.users.filter((user) => user.id !== id);
+    return true;
+  }
+}
+```
+
+### 5. DTOs
 
 ## Commands
 
