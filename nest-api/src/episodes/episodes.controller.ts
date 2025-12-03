@@ -11,6 +11,7 @@ import {
 import { EpisodesService } from './episodes.service';
 import { CreateEpisodeDTO } from './dto/create-episode.dto';
 import { UpdateEpisodeDto } from './dto/update-episode.dto';
+import { Episode } from './types/episode.type';
 
 @Controller('episodes')
 export class EpisodesController {
@@ -22,7 +23,7 @@ export class EpisodesController {
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
+  findOne(@Param('id') id: Episode['id']) {
     return this.service.findOne(id);
   }
 
@@ -32,12 +33,12 @@ export class EpisodesController {
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() dto: UpdateEpisodeDto) {
+  update(@Param('id') id: Episode['id'], @Body() dto: UpdateEpisodeDto) {
     return this.service.update(id, dto);
   }
 
   @Delete(':id')
-  delete(@Param('id') id: string) {
+  delete(@Param('id') id: Episode['id']) {
     return this.service.delete(id);
   }
 }

@@ -2,7 +2,7 @@
 
 ![alt text](clean-arc.png)
 
-## NestJS and Angular
+## 1. NestJS and Angular
 
 NestJS architecture is basically angular transplanted to the backend
 
@@ -50,7 +50,7 @@ Angular and NestJS have:
 - Guards: route authorization
 - Interceptors: cross-cutting logic
 
-## Concepts
+## 2. Concepts
 
 ### 1. Modules: Groups features
 
@@ -237,9 +237,7 @@ export class UsersService {
 }
 ```
 
-### 5. DTOs
-
-## Commands
+## 3. Commands
 
 ```bash
 npm install -g @nestjs/cli
@@ -257,7 +255,7 @@ nest build
 nest info
 ```
 
-## DTO: How data is sent over the network
+## 4. DTO: How data is sent over the network
 
 - DTO: Data Transfer Object
   - Contract between client and server
@@ -267,6 +265,8 @@ nest info
   - query params
   - update payloads
   - response shapes
+
+- They are used for: bodies, queries, responses
 
 - They represent API contracts, not domain models
 

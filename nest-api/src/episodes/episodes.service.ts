@@ -7,6 +7,7 @@ import { UpdateEpisodeDto } from './dto/update-episode.dto';
 export class EpisodesService {
   // for now, only an array
   private episodes: Episode[] = [];
+  counter = 1;
 
   //   we should be able to create and grab the created episodes
   findAll(sort: 'asc' | 'desc') {
@@ -17,17 +18,18 @@ export class EpisodesService {
     return [...this.episodes].sort((a, b) => b.name.localeCompare(a.name));
   }
 
-  findOne(id: string) {
+  findOne(id: Episode['id']) {
     return this.episodes.find((ep) => ep.id === id);
   }
 
   create(dto: CreateEpisodeDTO) {
-    const episode = { id: Date.now().toString(), ...dto };
+    const episode = { id: this.counter, ...dto };
     this.episodes.push(episode);
+    this.counter++;
     return episode;
   }
 
-  update(id: string, dto: UpdateEpisodeDto) {
+  update(id: Episode['id'], dto: UpdateEpisodeDto) {
     const episode = this.episodes.find((episode) => episode.id === id);
 
     if (!episode) {
@@ -38,8 +40,8 @@ export class EpisodesService {
     return episode;
   }
 
-  delete(id: string) {
-    this.episodes.filter((episode) => episode.id !== id);
+  delete(id: Episode['id']) {
+    this.episodes = this.episodes.filter((episode) => episode.id !== id);
     return true;
   }
 }
