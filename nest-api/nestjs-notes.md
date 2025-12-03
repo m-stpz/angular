@@ -270,10 +270,6 @@ nest info
 
 - They represent API contracts, not domain models
 
-```
-
-```
-
 ### Why are they used
 
 1. Validation
@@ -356,5 +352,58 @@ create(dto: CreateEpisodeDto): Episode {
 @Post
 create(@Body dto: CreateEpisodeDto){
   return this.service.create(dto)
+}
+```
+
+### Getting started with DTOs
+
+#### 1. install packages
+
+```
+npm install class-validator class-transformer
+```
+
+- class-validator: Provides decorators for validating DTOs
+- class-transformer: Converts plain objects to instances of DTO classes
+
+#### 2. Define DTO
+
+```ts
+// src/<entity>/dto/<dto-type>.dto.ts
+// src/users/dto/create-user.dto.ts
+
+import { IsString, IsEmail, IsNotEmpty, MinLength } from 'class-validator';
+
+export class CreateUserDto {
+  @IsString()
+  @IsNotEmpty()
+  readonly name: string;
+
+  @IsEmail()
+  @IsNotEmpty()
+  readonly email: string;
+
+  @IsString()
+  @MinLength(8)
+  readonly password: string;
+}
+```
+
+#### 3. Use it in a controller
+
+```ts
+// src/users/users.controller.ts
+import { Body, Controller, Post } from '@nestjs/common';
+import { CreateUserDto } from './dto/create-user.dto';
+import { UsersService } from './users.service';
+
+@Controller('users')
+export class UserController {
+  constructor(private readonly usersService: UsersService) {}
+
+  @Post
+  async createUser(@Body dto: CreateUserDto) {
+    return this.usersService.createUser(dto);
+  }
 }
 ```

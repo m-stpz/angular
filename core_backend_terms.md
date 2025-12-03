@@ -50,3 +50,33 @@ Scientific app:
 ## 4. DTO / Data Transfer Object: API contract for input/output network
 
 - An object/class that defines what can enter and leave your applications
+
+## 5. Provider
+
+- A class NestJS can inject using DI:
+  - services
+  - repositories
+  - adapters
+  - factories
+  - strategies (JWT, OAuth)
+
+## 6. Layer
+
+- Presentation layer
+
+  - Controllers (REST)
+  - Resolvers (GraphQL)
+
+- Business / Application Layer
+
+  - Services
+  - Use cases
+
+- Domain layer
+
+  - Entities
+  - Domain rules
+
+- Infrastructure layer
+  - Database adapters
+  - External APIs
