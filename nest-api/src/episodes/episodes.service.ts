@@ -1,13 +1,7 @@
 import { Injectable } from '@nestjs/common';
-
-type Episode = {
-  id: string;
-  name: string;
-};
-
-type CreateEpisodeDTO = {
-  name: Episode['name'];
-};
+import { Episode } from './types/episode.type';
+import { CreateEpisodeDTO } from './dto/create-episode.dto';
+import { UpdateEpisodeDto } from './dto/update-episode.dto';
 
 @Injectable()
 export class EpisodesService {
@@ -27,9 +21,25 @@ export class EpisodesService {
     return this.episodes.find((ep) => ep.id === id);
   }
 
-  create(body: CreateEpisodeDTO) {
-    const episode = { id: Date.now().toString(), ...body };
+  create(dto: CreateEpisodeDTO) {
+    const episode = { id: Date.now().toString(), ...dto };
     this.episodes.push(episode);
     return episode;
+  }
+
+  update(id: string, dto: UpdateEpisodeDto) {
+    const episode = this.episodes.find((episode) => episode.id === id);
+
+    if (!episode) {
+      return null;
+    }
+
+    Object.assign(episode, dto);
+    return episode;
+  }
+
+  delete(id: string) {
+    this.episodes.filter((episode) => episode.id !== id);
+    return true;
   }
 }

@@ -1,5 +1,16 @@
-import { Body, Controller, Get, Param, Post, Query } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Param,
+  Patch,
+  Post,
+  Query,
+} from '@nestjs/common';
 import { EpisodesService } from './episodes.service';
+import { CreateEpisodeDTO } from './dto/create-episode.dto';
+import { UpdateEpisodeDto } from './dto/update-episode.dto';
 
 @Controller('episodes')
 export class EpisodesController {
@@ -16,7 +27,17 @@ export class EpisodesController {
   }
 
   @Post()
-  create(@Body() input: { name: string }) {
-    return this.service.create(input);
+  create(@Body() dto: CreateEpisodeDTO) {
+    return this.service.create(dto);
+  }
+
+  @Patch(':id')
+  update(@Param('id') id: string, @Body() dto: UpdateEpisodeDto) {
+    return this.service.update(id, dto);
+  }
+
+  @Delete(':id')
+  delete(@Param('id') id: string) {
+    return this.service.delete(id);
   }
 }
