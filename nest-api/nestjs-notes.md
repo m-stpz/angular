@@ -256,3 +256,105 @@ nest start --watch # watch mode
 nest build
 nest info
 ```
+
+## DTO: How data is sent over the network
+
+- DTO: Data Transfer Object
+  - Contract between client and server
+- It's a class that defines the shape of data that comes into/out of the application, typically through HTTP requests
+- In nestjs, they represent:
+  - request bodies
+  - query params
+  - update payloads
+  - response shapes
+
+- They represent API contracts, not domain models
+
+```
+
+```
+
+### Why are they used
+
+1. Validation
+
+- They work with `class-validator` and `class-transformer`
+
+```ts
+export class CreateEpisodeDto {
+  @IsString()
+  @IsNotEmpty()
+  name: string;
+}
+```
+
+- Now, nestjs **auto-validates** the incoming request before it reaches the controller/service
+
+2. Transformation
+
+- They can transform incoming data
+  - strings into nums
+  - trimming
+  - parsing
+
+3. Explicit API contract
+
+- Clients know exactly what the backend expects
+
+4. Security
+
+- DTOs whitelist fields, this means, it prevents attacks of sending extra fields that app shouldn't accept
+
+5. Decoupling
+
+- Separate data structure from business logic
+
+  https://dev.to/cendekia/mastering-dtos-in-nestjs-24e4 (to read)
+
+### DTO vs. Type
+
+| Concept | Definition          | Used for                         | Why important                           |
+| ------- | ------------------- | -------------------------------- | --------------------------------------- |
+| Type    | Internal shape data | domain logic, services, DB layer | expressive, flexible                    |
+| DTO     | Shape of IO         | controllers, validation          | security, validation, safety, contracts |
+
+- Types represent **domain model**, aka internal application data
+- It's not meant for validation, transformation, or HTTP input
+
+```ts
+type Episode = {
+  id: string;
+  name: string;
+};
+```
+
+- DTOs describe what the client is allowed to send
+
+```ts
+export class CreateEpisodeDto {
+  name: string;
+}
+```
+
+#### Examples
+
+- Services
+
+```ts
+create(dto: CreateEpisodeDto): Episode {
+  const episode: Episode = {
+    ...
+  }
+
+  ...
+}
+```
+
+- Controller
+
+```ts
+@Post
+create(@Body dto: CreateEpisodeDto){
+  return this.service.create(dto)
+}
+```
