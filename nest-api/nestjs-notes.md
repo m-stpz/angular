@@ -411,3 +411,48 @@ export class UserController {
 - Nearly everything in NestJS is a provider
 - Providers can `@Injectable()`
   - They are the backbone of DI
+
+- Providers can be injected into:
+- Controllers
+
+```ts
+class Controller {
+  constructor(private readonly service: MyService) {}
+}
+```
+
+- Other providers (like services)
+
+```ts
+@Injectable
+class MyService {
+  constructor(private readonly service: ServiceTwo) {}
+}
+```
+
+- Repositories
+
+```ts
+@Injectable
+class MyService {
+  constructor(private readonly repo: MyRepo) {}
+}
+```
+
+- Guards
+
+```ts
+@Injectable
+class AuthGuard implements CanActivate {
+  constructor(private readonly service: MyService) {}
+}
+```
+
+- Pipes
+
+```ts
+@Injectable
+export class ParseEpisodePipe implements PipeTransform {
+  constructor(private readonly service: MyService) {}
+}
+```

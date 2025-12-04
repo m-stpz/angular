@@ -16,6 +16,7 @@ import type { Sort } from './types/sort.type';
 
 @Controller('episodes')
 export class EpisodesController {
+  // the service is injected into the controller
   constructor(private readonly service: EpisodesService) {}
 
   @Get()
