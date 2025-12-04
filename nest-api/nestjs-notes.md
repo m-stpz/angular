@@ -305,8 +305,6 @@ export class CreateEpisodeDto {
 
 - Separate data structure from business logic
 
-  https://dev.to/cendekia/mastering-dtos-in-nestjs-24e4 (to read)
-
 ### DTO vs. Type
 
 | Concept | Definition          | Used for                         | Why important                           |
@@ -407,3 +405,9 @@ export class UserController {
   }
 }
 ```
+
+## 5. Providers
+
+- Nearly everything in NestJS is a provider
+- Providers can `@Injectable()`
+  - They are the backbone of DI

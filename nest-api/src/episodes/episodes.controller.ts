@@ -12,13 +12,14 @@ import { EpisodesService } from './episodes.service';
 import { CreateEpisodeDTO } from './dto/create-episode.dto';
 import { UpdateEpisodeDto } from './dto/update-episode.dto';
 import { Episode } from './types/episode.type';
+import type { Sort } from './types/sort.type';
 
 @Controller('episodes')
 export class EpisodesController {
   constructor(private readonly service: EpisodesService) {}
 
   @Get()
-  findAll(@Query('sort') sort: 'asc' | 'desc' = 'desc') {
+  findAll(@Query('sort') sort: Sort = 'desc') {
     return this.service.findAll(sort);
   }
 

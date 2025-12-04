@@ -2,6 +2,8 @@ import { Injectable } from '@nestjs/common';
 import { Episode } from './types/episode.type';
 import { CreateEpisodeDTO } from './dto/create-episode.dto';
 import { UpdateEpisodeDto } from './dto/update-episode.dto';
+import { Sort } from './types/sort.type';
+import { sortEpisodes } from './utils/sort-episodes.util';
 
 @Injectable()
 export class EpisodesService {
@@ -10,16 +12,12 @@ export class EpisodesService {
   counter = 1;
 
   //   we should be able to create and grab the created episodes
-  findAll(sort: 'asc' | 'desc') {
-    if (sort === 'asc') {
-      return [...this.episodes].sort((a, b) => a.name.localeCompare(b.name));
-    }
-
-    return [...this.episodes].sort((a, b) => b.name.localeCompare(a.name));
+  findAll(sort: Sort) {
+    return sortEpisodes(sort, this.episodes);
   }
 
   findOne(id: Episode['id']) {
-    return this.episodes.find((ep) => ep.id === id);
+    return this.episodes.find((ep) => ep.id === Number(id));
   }
 
   create(dto: CreateEpisodeDTO) {
