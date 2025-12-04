@@ -13,7 +13,7 @@ import { CreateEpisodeDTO } from './dto/create-episode.dto';
 import { UpdateEpisodeDto } from './dto/update-episode.dto';
 import { Episode } from './types/episode.type';
 import type { Sort } from './types/sort.type';
-import { ConfigService } from 'src/config/config.service';
+import { ConfigService } from '../config/config.service';
 
 @Controller('episodes')
 export class EpisodesController {
