@@ -456,3 +456,51 @@ export class ParseEpisodePipe implements PipeTransform {
   constructor(private readonly service: MyService) {}
 }
 ```
+
+## 6. Testing
+
+- NestJS testing is built around `Jest`
+- `@nestjs/testing`: utility to create a testing module, which is like a mini Nest app for tets
+- Unit tests
+  - Services (business logic)
+  - Repositories
+  - Helpers / utils
+  - guards / pipes / interceptors
+
+### Unit testing a service
+
+```ts
+// episodes.service.spec.ts
+
+import { Test, TestingModule } from '@nestjs/testing';
+import { EpisodesService } from './episodes.service';
+
+describe('EpisodesService', () => {
+  // this is defined by default
+  let service: EpisodesService;
+
+  beforeEach(async () => {
+    const module: TestingModule = await Test.createTestingModule({
+      providers: [EpisodesService],
+    }).compile();
+
+    service = module.get<EpisodesService>(EpisodesService);
+  });
+
+  it('should create an episode', () => {
+    const epName = 'Episode 1';
+    const result = await service.create({ name: epName });
+
+    expect(result).toHaveProperty('id');
+    expect(result.name).toBe(epName);
+  });
+
+  it('should return episodes in sorted asc order', () => {
+    service.create({ name: 'B' });
+    service.create({ name: 'A' });
+
+    const episodes = await service.findAll('asc');
+    expect(episodes[0].name).toBe('A');
+  });
+});
+```
