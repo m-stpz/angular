@@ -504,3 +504,46 @@ describe('EpisodesService', () => {
   });
 });
 ```
+
+## 7. Error handling
+
+- NestJS has built-in HTTP exceptions
+
+```ts
+throw new NotFoundException('');
+throw new BadRequestException('Invalid data');
+throw new UnauthorizedException();
+throw new ForbiddenException();
+throw new InternalServerErrorException();
+```
+
+- Use them inside the services, since they contain the business logic
+
+```ts
+findOne(id:string){
+  const episode = this.episodes.find(e => e.id === id)
+
+  if (!episode){
+    throw new NotFoundException(`Episode with ${id} not found`)
+  }
+
+  return episode
+}
+```
+
+### Create custom ones
+
+- For domain-specific rules, you can create custom exceptions:
+
+```ts
+export class EpisodeNameTakenException extends BadRequestException {
+  constructor(name: string) {
+    super(`Episode name "${name}" is in use`);
+  }
+}
+
+// using it in the service
+if (exists) {
+  throw new EpisodeNameTakenException(dto.name);
+}
+```
