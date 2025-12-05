@@ -547,3 +547,60 @@ if (exists) {
   throw new EpisodeNameTakenException(dto.name);
 }
 ```
+
+## 8. Pipes: Pre-processing data
+
+- They `____` incoming data before it reaches the controller
+  - validate
+  - transform
+  - sanitize
+
+Every pipe can do one or both:
+
+1. Validate: Rejects the request if input is invalid
+
+- `id must be a number`
+
+2. Transform: Convert input into the expected format
+
+- `convert "5" into 5`
+
+- They can run on:
+
+| Level         | Example                                  |
+| ------------- | ---------------------------------------- |
+| Method param  | @Param("id", ParseIntPipe)               |
+| Route handler | @UsePipes(ValidationPipe)                |
+| Controller    | @UsePipes() on class                     |
+| Globally      | app.useGlobalPipes(new ValidationPipe()) |
+
+### Built-in pipes
+
+1. ValidationPipe
+
+- The most important pipe in Nestjs
+- Works with `class-validator` + DTOs
+
+```ts
+app.useGlobalPipes(new ValidationPipe());
+
+// now, DTOs are automatically validated
+class CreateEpisodeDto {
+  @IsString()
+  @IsNotEmpty()
+  name: string;
+}
+
+// now, if the request body is wrong, Nest returns `400 Bad request`
+```
+
+2. ParseIntPipe
+
+- Converts "3" into 3 or throws 400 if invalid
+
+```ts
+@Get(":id")
+findOne(@Param("id", ParseIntPipe) id:number){
+  return this.service.findOne(id)
+}
+```
