@@ -23,6 +23,7 @@ npx create-nx-workspace@latest
 nx add @nx/nest
 nx g @nx/nest:app apps/<name>
 nx serve <name>
+# nx serve backend
 ```
 
 ```
@@ -30,10 +31,6 @@ root -> where nx is located
     apps
         backend -> where nestjs is
 ```
-
-<!-- video: 13:11 -->
-
-- I will stop the video for now, to learn more about firebase
 
 ### 3. Setup firestore
 
