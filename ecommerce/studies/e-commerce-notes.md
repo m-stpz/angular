@@ -31,13 +31,23 @@ root -> where nx is located
         backend -> where nestjs is
 ```
 
+<!-- video: 13:11 -->
+
+- I will stop the video for now, to learn more about firebase
+
+### 3. Setup firestore
+
+### 4. Connect NestJS app to firestore
+
+### 5. Add GraphQL to NestJS
+
+== Possible steps ==
+
 3. Add GraphQL to NestJS
-4. Add prisma to NestJS app and connect with Postgres DB
+4. Connect NestJS app to firestore
 5. Add a seed command to create products in DB
 6. Create the frontend (Angular)
-7. Setup tailwind CSS
+7. Setup Angular material/SDK
 8. Add NgRx signal store & create ProductsStore
-9. Ann angular-apollo for GraphQL queries
+9. Add angular-apollo for GraphQL queries
 10. Implement getting products API call
-
-##
