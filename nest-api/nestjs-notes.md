@@ -604,3 +604,120 @@ findOne(@Param("id", ParseIntPipe) id:number){
   return this.service.findOne(id)
 }
 ```
+
+## Guards: Is the caller allowed to access this route?
+
+- Used for:
+  - Authentication: does request have a valid JWT token, API key, session, etc?
+  - Authorization: does the user have the right role, permission, or ownership?
+  - Access control logic: users can only update their own episodes, not others
+  - Request-level policies: Only admins can use certain endpoints
+
+- Request lifecycle
+  - Guards: should this request be allowed?
+  - Pipes: transform and validate data
+  - Interceptors: wrap logic/modify response
+  - Controller: executes the handler
+
+```ts
+import {
+  CanActivate,
+  ExecutionContext,
+  Injectable,
+  UnauthorizedException,
+} from '@nestjs/common';
+
+@Injectable
+export class AuthGuard implements CanActivate {
+  canActivate(context: ExecutionContext): boolean {
+    const request = context.switchToHttp().getRequest();
+    const token = request.headers['authorization'];
+
+    if (!token) {
+      throw new UnauthorizedException('Missing auth token');
+    }
+
+    return true;
+  }
+}
+
+// using it within a controller
+@Controller("episodes")
+class MyController {
+  ...
+
+  @UseGuards(AuthGuard)
+  @Get('profile')
+  getProfile() {
+    return 'secure data';
+  }
+}
+
+// class level
+@UseGuards(AuthGuard)
+@Controller("episodes")
+export class EpisodesController {}
+
+// globally
+app.useGlobalGuards(new AuthGuard())
+```
+
+### Role-based
+
+1. Create a role decorator
+
+```ts
+import { SetMetadata } from '@nestjs/common';
+
+export const Roles = (...roles: string[]) => SetMetadata('roles', roles);
+```
+
+2. Make a guard that reads metadata
+
+```ts
+import {
+  CanActivate,
+  ExecutionContext,
+  Injectable,
+  ForbiddenException,
+  Reflector,
+} from '@nestjs/common';
+
+@Injectable
+export class RolesGuard implements CanActivate {
+  constructor(private reflector: Reflector) {}
+
+  canActivate(context: ExecutionContext): boolean {
+    const requiredRoles = this.reflector.get<string[]>(
+      'roles',
+      context.getHandler(),
+    );
+
+    if (!requiredRoles) {
+      return true;
+    }
+
+    const request = context.switchToHttp().getRequest();
+    const user = request.user;
+
+    const hasRole = requiredRoles.some((role) => user.roles?.include(role));
+
+    if (!hasRole) {
+      throw new ForbiddenException('Insufficient permissions');
+    }
+
+    return true;
+  }
+}
+```
+
+3. Use it in controller
+
+```ts
+@UserGuards(RoleGuard)
+@Roles("admin")
+@Get()
+findAll(){
+  return this.service.findAll()
+}
+```
