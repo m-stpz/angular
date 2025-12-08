@@ -34,6 +34,76 @@ root -> where nx is located
 
 ### 3. Setup firestore
 
+1. Install firebase admin and generate the module
+
+```bash
+pnpm install firebase-admin
+nest generate module firebase
+```
+
+2. Setup `firebase.module`
+
+```ts
+import { Module } from '@nestjs/common';
+import * as admin from 'firebase-admin';
+
+const firebase = admin.initializeApp({
+  credential: admin.credential.cert({
+    projectId: process.env.FIREBASE_PROJECT_ID,
+    clientEmail: process.env.FIREBASE_CLIENT_EMAIL,
+    privateKey: process.env.FIREBASE_API_KEY,
+  }),
+});
+
+export const FirestoreDB = firebase.firestore();
+
+@Module({
+  providers: [
+    {
+      provide: 'FIRESTORE',
+      useValue: FirestoreDB,
+    },
+  ],
+  exports: ['FIRESTORE'],
+})
+export class FirebaseModule {}
+```
+
+3. Inject the firestore in any service
+
+```ts
+import { Inject, Injectable } from '@nestjs/common';
+import { Firestore } from 'firebase-admin/firestore';
+
+@Injectable()
+export class UsersService {
+  constructor(@Inject('FIRESTORE') private readonly db: Firestore) {}
+
+  async findAll() {
+    const snapshot = await this.db.collection('users').get();
+
+    return snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
+  }
+
+  async create(data: any) {
+    const ref = await this.db.collection('users').add(data);
+    return { id: ref.id };
+  }
+}
+```
+
+4. Import module in AppModule
+
+```ts
+import { Module } from '@nestjs/common';
+import { FirebaseModule } from './firebase.module';
+
+@Module({
+  imports: [FirebaseModule],
+})
+export class AppModule {}
+```
+
 ### 4. Connect NestJS app to firestore
 
 ### 5. Add GraphQL to NestJS
