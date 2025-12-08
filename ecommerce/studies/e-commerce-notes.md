@@ -142,10 +142,37 @@ Product {
     createdAt: number,
     updatedAt:number
 }
-
 ```
 
 - Firestore doesn't require schemas, you create the structure by writing the first document
+
+```bash
+nest g s products
+```
+
+#### Seed folder
+
+- Create some seed values
+  - backend/src/seed/products.seed.ts
+- Add the seed script to package.json
+
+```json
+// apps/backend/package.json
+"nx":{
+  "targets": {
+    ...,
+
+
+ "seed": {
+    "executor": "nx:run-commands",
+    "options": {
+      "command": "ts-node apps/backend/src/seed/products.seed.ts"
+    }
+  }
+  }
+}
+
+```
 
 #### Good patterns for firestore
 

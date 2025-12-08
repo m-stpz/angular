@@ -6,7 +6,7 @@ const firebase = admin.initializeApp({
   credential: admin.credential.cert(firebaseConfig as admin.ServiceAccount),
 });
 
-export const FirestoreDB = firebase.firestore();
+const FirestoreDB = firebase.firestore();
 
 @Module({
   providers: [
