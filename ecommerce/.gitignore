@@ -45,3 +45,4 @@ Thumbs.db
 
 test-output
 .env
+apps/backend/src/config/firebase.config.json

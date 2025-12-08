@@ -9,7 +9,7 @@
     "emitDecoratorMetadata": true,
     "target": "es2021"
   },
-  "include": ["src/**/*.ts"],
+  "include": ["src/**/*.ts", "src/config/firebase.config.json"],
   "exclude": [
     "out-tsc",
     "dist",

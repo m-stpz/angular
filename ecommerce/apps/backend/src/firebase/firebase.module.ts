@@ -1,12 +1,9 @@
 import { Module } from '@nestjs/common';
 import * as admin from 'firebase-admin';
+import * as firebaseConfig from '../config/firebase.config.json';
 
 const firebase = admin.initializeApp({
-  credential: admin.credential.cert({
-    projectId: process.env.FIREBASE_PROJECT_ID,
-    clientEmail: process.env.FIREBASE_CLIENT_EMAIL,
-    privateKey: process.env.FIREBASE_API_KEY,
-  }),
+  credential: admin.credential.cert(firebaseConfig as admin.ServiceAccount),
 });
 
 export const FirestoreDB = firebase.firestore();

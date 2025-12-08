@@ -32,7 +32,7 @@ root -> where nx is located
         backend -> where nestjs is
 ```
 
-### 3. Setup firestore
+### 3. Setup firestore + connect it to NestJS
 
 1. Install firebase admin and generate the module
 
@@ -104,7 +104,53 @@ import { FirebaseModule } from './firebase.module';
 export class AppModule {}
 ```
 
-### 4. Connect NestJS app to firestore
+#### Get firebase admin credentails
+
+- Firebase console -> Project settings -> Service accounts -> Generate new private key
+- You'll get a json file
+- Don't commit it, keep it close the firebase
+
+```bash
+# .gitignore
+
+apps/backend/src/config/firebase.config.json
+```
+
+```json
+// # It was necesary to add the config file to tsconfig.app.json, otherwise TS was complaning
+{
+  "include": ["src/config/firebase.config.json"]
+}
+```
+
+### 4. Data models
+
+- In the video, he's using Postgres, but we'll be using firestore, a NoSQL db
+
+```
+/products
+    / <productId>
+Product {
+    id: number,
+    name: string,
+    description: string,
+    price:number,
+    image:string,
+    stripePriceId:string,
+    isFeatured: boolean,
+    orderItem: OrderItems[]
+    createdAt: number,
+    updatedAt:number
+}
+
+```
+
+- Firestore doesn't require schemas, you create the structure by writing the first document
+
+#### Good patterns for firestore
+
+- Use flat collections, avoid deep nesting
+- Store timestamps using JS `Date`
 
 ### 5. Add GraphQL to NestJS
 
