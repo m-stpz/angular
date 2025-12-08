@@ -1,7 +1,7 @@
 import { OrderItem } from './order-item.type';
 
 export type Product = {
-  id: number;
+  id: string;
   name: string;
   description: string;
   price: number;
