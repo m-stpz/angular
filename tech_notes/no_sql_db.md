@@ -144,3 +144,43 @@ orderItems/{orderItemId}{
 ### How to model relational relations into NoSQL
 
 #### 1:1
+
+##### Pattern 1: Embed
+
+- Use when the data is small and always fetched together
+
+```
+users/{userId} {
+  name,
+  email,
+  profile: {
+    bio,
+    avatar,
+    location
+  }
+}
+```
+
+- Pros:
+  - fewer reads, simpler
+- Cons:
+  - large documents if profile grows
+  - profile kind of "depends" on user and user needs to maintain extra information that otherwise wouldn't be needed
+
+##### Pattern 2: Reference
+
+- Related data becomes more indepedennt
+- Good for: optional, large, or updated indepedently data sets
+
+```
+users/{userId}
+profiles/{userId}
+```
+
+- Then, we store only the ID of the profile
+
+```
+users/{userId}{
+  profileId:"123"
+}
+```
