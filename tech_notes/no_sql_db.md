@@ -2,6 +2,14 @@
 
 ## Why NoSQL?
 
+- Relational databases are great for consistency, but bad for:
+  - scaling
+  - resource intensiveness
+- SQL scales vertically, not horizontally
+- NoSQL
+  - Does away with relationships
+  - Every item stays on its own
+
 ### 1. More scalable
 
 - NoSQL scale out, not up
@@ -51,3 +59,88 @@
 - Example:
   - Store user info inside each post document
   - Trade-off: you need to manually handle updates if the user changes their name
+
+### 4. Index-driven queries
+
+- Queries depend on indexes. No index = no query
+- Firestore auto-indexes simple fields, but needs manula indexes for compound queries
+- Design rule: Think about how you'll query before defining the structure
+
+### 5. Eventual consistency
+
+- Many NoSQL systems aren't strongly consistent
+- Firestore has strong consistency for document reads/writes, but eventual consistency for some distributed queries
+
+## Example
+
+Let's say you have:
+
+### Relational database
+
+```ts
+export type Product = {
+  id: string;
+  name: string;
+  ...
+  orderItem: OrderItem[];
+};
+
+
+export type Order = {
+  id: string;
+  status: OrderStatus;
+  ...
+  items?: OrderItem[];
+};
+
+export type OrderItem = {
+  id: string;
+  ...
+  orderId: Order['id'];
+  order: Order;
+  product: Product;
+};
+```
+
+- Here,
+
+  - a product can have multiple orderItems
+  - an order, multiple order items
+  - an order item belongs to order and product
+
+- For NoSQL, the models are restructured around queries and data locality
+
+### Non-relational database
+
+1. Flatten the structure
+
+- Collections become top-level
+
+```
+orders
+orderItems
+products
+```
+
+2. Remove circular references
+
+- Never store full objects inside other objects
+- Store only the IDs needed for queries
+
+```
+orders/{orderId}{
+  id,
+  userId,
+  status,
+  ... => no relation to orderId
+}
+
+orderItems/{orderItemId}{
+  id,
+  orderId => only store the id
+}
+```
+
+### How to model relational relations into NoSQL
+
+#### 1:1
