@@ -171,7 +171,11 @@ nest g s products
   }
   }
 }
+```
 
+```bash
+nx seed
+# nx <custom-script>
 ```
 
 #### Good patterns for firestore

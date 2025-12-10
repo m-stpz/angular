@@ -7,8 +7,7 @@ export type Order = {
   userId: string;
   status: OrderStatus;
   totalAmount: number;
-  paymentId: number;
-  items?: OrderItem[];
+  paymentId: string;
   createdAt: number;
   updatedAt: number;
 };
@@ -16,9 +15,11 @@ export type Order = {
 export type OrderItem = {
   id: string;
   orderId: Order['id'];
-  productId: number;
+  productId: Product['id'];
   quantity: number;
   price: number;
-  order: Order;
-  product: Product;
+
+  // snapshot (historically accurate, but not kept in sync)
+  productName?: Product['name'];
+  productPriceAtPurchase?: Product['price'];
 };

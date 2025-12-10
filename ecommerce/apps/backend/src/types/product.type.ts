@@ -1,5 +1,3 @@
-import { OrderItem } from './order-item.type';
-
 export type Product = {
   id: string;
   name: string;
@@ -8,7 +6,6 @@ export type Product = {
   image: string;
   stripePriceId: string;
   isFeatured: boolean;
-  orderItem: OrderItem[];
   createdAt: number;
   updatedAt: number;
 };
