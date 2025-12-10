@@ -85,7 +85,6 @@ export type Product = {
   orderItem: OrderItem[];
 };
 
-
 export type Order = {
   id: string;
   status: OrderStatus;
@@ -141,9 +140,73 @@ orderItems/{orderItemId}{
 }
 ```
 
+#### Result
+
+```ts
+export type Product = {
+  id: string;
+  name: string;
+  ...
+  // orderItem: OrderItem[]; => no orderItem inside it
+};
+
+
+export type Order = {
+  id: string;
+  status: OrderStatus;
+  ...
+  // items?: OrderItem[]; => items is removed, no items array inside the order
+  // orderItems are fetched via `orderId` query
+};
+
+export type OrderItem = {
+  id: string;
+  ...
+  orderId: Order['id']; // reference to order
+  ...
+  // product: Product; // remove the product
+  productId: string; // reference to product
+
+// order: Order; // instead of order, you write some "shallow" information on write-time
+// denormalized snapshopts
+  productName:string;
+  productImage: string;
+  productPriceAtPurchase: number;
+};
+```
+
+##### Why (normalized) snapshots?
+
+- Prevent extra reads -> no need to fetch product for every item
+- Preserve historical accuracy
+
+##### Queries
+
+- Get Order -> OrderItems
+
+```ts
+const items = await db
+  .collection("orderItems")
+  .where("orderId", "==", orderId)
+  .get();
+```
+
+- Get OrderItem -> Product:
+  - You can fetch it, but not needed if using denormalized fields
+
+```ts
+const product = await db.collection("products").doc(orderItem.productId).get();
+```
+
+- Get all orders for a user
+
+```ts
+db.collection("orders").where("userId", "==", userId);
+```
+
 ### How to model relational relations into NoSQL
 
-#### 1:1
+#### 1:1 (One-to-One)
 
 ##### Pattern 1: Embed
 
@@ -184,3 +247,47 @@ users/{userId}{
   profileId:"123"
 }
 ```
+
+#### 1:N (One-to-Many)
+
+##### Pattern 1: Flat (Recommended)
+
+- Store children in top-level collections wih a foreign key
+
+```
+users/{userId}
+orders/{orderId} {
+  userId: "1234",
+  ...
+}
+```
+
+```ts
+// query
+orders.where("userId", "==", userId);
+```
+
+##### Pattern B: Subcollection
+
+- When children always belongs to one parent and you always fetch them via the parent
+
+```
+users/{userId}/orders/{orderId}
+```
+
+#### N:N (Many-to-Many)
+
+- You create an explicit link
+
+##### Pattern 1: Linking collection (best general solution)
+
+```
+user_product_favorites/{linkId} {
+  userId,
+  productId
+}
+```
+
+- Lookups:
+  - All user favorites: filter by userId
+  - All users who have favorited something: filter by productId
