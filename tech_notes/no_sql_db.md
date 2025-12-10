@@ -175,11 +175,6 @@ export type OrderItem = {
 };
 ```
 
-##### Why (normalized) snapshots?
-
-- Prevent extra reads -> no need to fetch product for every item
-- Preserve historical accuracy
-
 ##### Queries
 
 - Get Order -> OrderItems
@@ -204,11 +199,46 @@ const product = await db.collection("products").doc(orderItem.productId).get();
 db.collection("orders").where("userId", "==", userId);
 ```
 
-### How to model relational relations into NoSQL
+## Snapshots | Denormalization
 
-#### 1:1 (One-to-One)
+- Prevent extra reads -> no need to fetch product for every item
+- Preserve historical accuracy
+- Copy some fields from a related document into another document at write time, instead of looking them up every time you read
+- In SQL:
+  - Store data once
+  - Join tables to get combined info
+- In NoSQL:
+  - No joins
+  - Related data is often stored multiple times, locally where needed
+- Firestore is optimized for reads -> it's cheaper to duplicate a few fields than to perform extra network queries
+- By its definition this snapshots can introduce stale/outdated data
+  - In NoSQL, data becomes stale by design unless you decide to keep it in sync
+  - You must decide, field by field, where the stale data is acceptable or not
 
-##### Pattern 1: Embed
+### Types of data: Immutable / Historical vs. Mutable, Dynamic
+
+- Immutable historical data is fine to become "stale", snapshots are great for it
+- Mutable, Dynamic data, snapshots must be kept in sync
+  - For this, snapshots shouldn't be used, instead, store the id and always fetch fresh data
+
+### How to deal with denormalization? | 3 Strategies
+
+- 1. Don't store snapshots at all
+  - Store an id and always fetch fresh data
+  - More reads, but no stale data
+- 2. Store snapshots, but sync certain fields
+  - When something happens, run a background function, for instance
+  - No more stale data, but more writes
+  - Only you need consistency that's a path
+- 3. Allow snapshots to be stale (by design)
+  - Data that remain historically accurate to the point in history it was written
+  - The most common and correct usage of snaphots
+
+## How to model relational relations into NoSQL
+
+### 1:1 (One-to-One)
+
+#### Pattern 1: Embed
 
 - Use when the data is small and always fetched together
 
@@ -230,7 +260,7 @@ users/{userId} {
   - large documents if profile grows
   - profile kind of "depends" on user and user needs to maintain extra information that otherwise wouldn't be needed
 
-##### Pattern 2: Reference
+#### Pattern 2: Reference
 
 - Related data becomes more indepedennt
 - Good for: optional, large, or updated indepedently data sets
@@ -248,9 +278,9 @@ users/{userId}{
 }
 ```
 
-#### 1:N (One-to-Many)
+### 1:N (One-to-Many)
 
-##### Pattern 1: Flat (Recommended)
+#### Pattern 1: Flat (Recommended)
 
 - Store children in top-level collections wih a foreign key
 
@@ -267,7 +297,7 @@ orders/{orderId} {
 orders.where("userId", "==", userId);
 ```
 
-##### Pattern B: Subcollection
+#### Pattern B: Subcollection
 
 - When children always belongs to one parent and you always fetch them via the parent
 
@@ -275,11 +305,11 @@ orders.where("userId", "==", userId);
 users/{userId}/orders/{orderId}
 ```
 
-#### N:N (Many-to-Many)
+### N:N (Many-to-Many)
 
 - You create an explicit link
 
-##### Pattern 1: Linking collection (best general solution)
+#### Pattern 1: Linking collection (best general solution)
 
 ```
 user_product_favorites/{linkId} {
