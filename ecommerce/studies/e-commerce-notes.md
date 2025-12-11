@@ -208,14 +208,30 @@ apps/backend/src/
     products.resolver.ts
 ```
 
-<!-- Now, the seed elements are in the firestore
-  Time to get them
-  Now, let's setup graphql
+#### 3. Create ProductService to fetch from firestore
 
-  video:
-  https://www.youtube.com/watch?v=E1wtzB0ZSgQ&list=PLFbXZOeg7GKbkk9Fweu4G4jBpm-JFYwJp
-  31:35
- -->
+- Note: always run the commands from nx workspace root (!important)
+  - If you run `nest generate` inside `apps/backend` nx won't know about the new files and won't register project changes and workspace becomes inconsistent
+
+```VERIFY THIS!
+<!-- don't do this! -->
+nest g s product
+
+<!-- instead -->
+
+nx g @nx/nest:module products --project=@ecommerce/backend
+nx g @nx/nest:service products --project=@ecommerce/backend
+nx g @nx/nest:resolver products --project=@ecommerce/backend
+```
+
+- See `products.service.ts`
+
+#### 4. Create a resolver
+
+- Resolvers provide instructions for turning a GraphQL operation (query, mutation, subscription) into data
+- A layer in GraphQL responsible for answering GraphQL queries
+- The glue between GraphQL schema and backend logic
+- see `products.resolver.ts`
 
 == Possible steps ==
 
