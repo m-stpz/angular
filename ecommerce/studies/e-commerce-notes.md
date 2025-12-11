@@ -178,12 +178,44 @@ nx seed
 # nx <custom-script>
 ```
 
-#### Good patterns for firestore
-
-- Use flat collections, avoid deep nesting
-- Store timestamps using JS `Date`
-
 ### 5. Add GraphQL to NestJS
+
+#### 1. Install deps
+
+- By the way, for nx repo, install deps into the root
+- nx expects deps to live in the root
+
+```
+pnpm install @nestjs/graphql @nestjs/apollo graphql apollo-server-express
+```
+
+#### 2. Define GraphQL Types
+
+- Folder organization graphql vs type
+
+  - Keep them separate
+
+- See `product.graphql.ts`
+
+```
+apps/backend/src/
+  types/
+    product.type.ts         // TS model type
+  graphql/
+    product.graphql.ts      // GraphQL ObjectType class
+  products/
+    products.service.ts
+    products.resolver.ts
+```
+
+<!-- Now, the seed elements are in the firestore
+  Time to get them
+  Now, let's setup graphql
+
+  video:
+  https://www.youtube.com/watch?v=E1wtzB0ZSgQ&list=PLFbXZOeg7GKbkk9Fweu4G4jBpm-JFYwJp
+  31:35
+ -->
 
 == Possible steps ==
 
