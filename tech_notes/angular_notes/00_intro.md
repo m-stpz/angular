@@ -3,7 +3,6 @@
 - Angular is Framework, not a library
   - It has batteries included: router, HTTP client, DI, forms, state management patterns, build tooling
 - Opinionated structure
-
   - Modules -> components -> templates -> services
 
   ## Tools
@@ -381,7 +380,7 @@ getUsers(): Observable<User[]>{
 ```js
 // what the hell?
 users$ = this.route.params.pipe(
-  switchMap((params) => this.api.getUsers(params["id"]))
+  switchMap((params) => this.api.getUsers(params["id"])),
 );
 ```
 
@@ -415,6 +414,7 @@ npm install -g @angular/cli # install the cli globally
 ng --version # check the cli version
 ng new first-ng-app # create app
 ng new first-ng-app --inline-style --inline-template ## create app with config
+ng serve # runs the server
 ```
 
 ```json
