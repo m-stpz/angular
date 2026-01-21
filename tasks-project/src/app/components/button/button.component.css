@@ -1,0 +1,26 @@
+:host {
+  display: inline-block;
+}
+
+button {
+  padding: 0.5rem 1rem;
+  border-radius: 6px;
+  border: none;
+  cursor: pointer;
+  font-weight: 500;
+}
+
+:host(.btn-blue) button {
+  background: rgba(59, 59, 184, 0.66);
+  color: white;
+}
+
+:host(.btn-red) button {
+  background: rgba(204, 57, 27, 0.66);
+  color: white;
+}
+
+:host(.btn-green) button {
+  background: rgba(38, 200, 41, 0.66);
+  color: white;
+}
