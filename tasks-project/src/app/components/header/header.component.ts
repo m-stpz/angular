@@ -9,4 +9,12 @@ import { ButtonComponent } from '../button/button.component';
 })
 export class HeaderComponent {
   title = 'tasks-project';
+
+  parentFunc() {
+    console.log('hey');
+  }
+
+  parentFuncTwo() {
+    console.log(`Working on ${this.title}`);
+  }
 }
