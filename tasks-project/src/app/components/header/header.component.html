@@ -1,16 +1,12 @@
 <header>
   <p>{{ title }}</p>
 
-  <app-button
-    color="blue"
-    text="Add"
-    (clickMeParent)="parentFunc()"
-  ></app-button>
+  <app-button color="blue" text="Add" (btnClick)="parentFunc()"></app-button>
 
   <app-button
     color="green"
     text="Example"
-    (clickMeParent)="parentFuncTwo()"
+    (btnClick)="parentFuncTwo()"
   ></app-button>
   <app-button color="red" text="Hey"></app-button>
 </header>

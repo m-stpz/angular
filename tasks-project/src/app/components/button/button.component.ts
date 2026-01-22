@@ -16,7 +16,7 @@ import { ButtonColor } from './button.types';
 export class ButtonComponent {
   @Input({ required: true }) text!: string;
   @Input() color: ButtonColor = 'blue';
-  @Output() clickMeParent = new EventEmitter();
+  @Output() btnClick = new EventEmitter();
 
   @HostBinding('class')
   get hostClasses() {
@@ -24,6 +24,6 @@ export class ButtonComponent {
   }
 
   onClick() {
-    this.clickMeParent.emit();
+    this.btnClick.emit();
   }
 }

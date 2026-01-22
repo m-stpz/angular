@@ -1,8 +1,8 @@
-<div class="task-item">
-  <p>{{ task.id }}</p>
+<div class="task">
+  <div style="display: flex; justify-content: space-between">
+    <h3>{{ task.text }}</h3>
 
-  <div class="task-item-container">
-    <p>{{ task.text }}</p>
-    <p>{{ task.day }}</p>
+    <app-button text="x" color="red" (btnClick)="deleteItem()"></app-button>
   </div>
+  <p>{{ task.day }}</p>
 </div>
