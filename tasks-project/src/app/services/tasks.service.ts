@@ -21,6 +21,16 @@ export class TasksService {
   */
   readonly tasks = this._tasks.asReadonly();
 
+  createTask(task: Task) {
+    this._tasks.update((tasks) => [...tasks, task]);
+  }
+
+  updateTask(updatedTask: Task) {
+    this._tasks.update((tasks) =>
+      tasks.map((task) => (task.id === updatedTask.id ? updatedTask : task)),
+    );
+  }
+
   deleteTask(id: Task['id']) {
     this._tasks.update((tasks) => tasks.filter((task) => task.id !== id));
   }
