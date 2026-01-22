@@ -1,5 +1,5 @@
 <div class="task-list">
-  @for (task of tasks; track task.id) {
+  @for (task of tasks(); track task.id) {
     <app-task-item [task]="task"></app-task-item>
   }
 </div>

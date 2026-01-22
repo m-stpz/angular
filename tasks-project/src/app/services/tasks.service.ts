@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, signal } from '@angular/core';
 import { Task } from '../types/task.type';
 import { TASKS } from '../mock-tasks';
 
@@ -6,9 +6,22 @@ import { TASKS } from '../mock-tasks';
   providedIn: 'root',
 })
 export class TasksService {
-  private tasks: Task[] = TASKS;
+  /*  
+    service owns it
+    private => no component can touch it
+    writable => only service can mutate
+    source of truth
+  */
+  private readonly _tasks = signal<Task[]>(TASKS);
 
-  getTasks() {
-    return this.tasks;
+  /* 
+    public => exposed to components
+    unmutable => read only
+    can only be read/subscribed to
+  */
+  readonly tasks = this._tasks.asReadonly();
+
+  deleteTask(id: Task['id']) {
+    this._tasks.update((tasks) => tasks.filter((task) => task.id !== id));
   }
 }

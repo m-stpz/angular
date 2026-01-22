@@ -1,6 +1,7 @@
 import { Component, Input } from '@angular/core';
 import { Task } from '../../types/task.type';
 import { ButtonComponent } from '../button/button.component';
+import { TasksService } from '../../services/tasks.service';
 
 @Component({
   selector: 'app-task-item',
@@ -9,9 +10,12 @@ import { ButtonComponent } from '../button/button.component';
   styleUrl: './task-item.component.css',
 })
 export class TaskItemComponent {
-  @Input() task!: Task;
+  @Input({ required: true }) task!: Task;
 
-  deleteItem() {
-    console.log('to delete', this.task.text);
+  constructor(private tasksService: TasksService) {}
+
+  deleteTask() {
+    console.log('hey');
+    this.tasksService.deleteTask(this.task.id);
   }
 }
