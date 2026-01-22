@@ -1,12 +1,5 @@
 <div class="task-list">
   @for (task of tasks; track task.id) {
-    <div class="task-item">
-      <p>{{ task.id }}</p>
-
-      <div class="task-item-container">
-        <p>{{ task.text }}</p>
-        <p ngStyle="{background-color:'red'}">{{ task.day }}</p>
-      </div>
-    </div>
+    <app-task-item [task]="task"></app-task-item>
   }
 </div>
