@@ -37,6 +37,23 @@ export class MyComponent {
 }
 ```
 
+```html
+@for (task of tasks(); track task.id) {
+<button>Edit {{task.id}}</button>
+}
+<!--  -->
+@if(selectedTask(); as task) {
+<div class="modal-backdrop" (click)="closeModal()">
+  <div class="modal-content" (click)="$event.stopPropagation()">
+    <h2>Editing {{task.name}}</h2>
+    <p>ID: {{task.id}}</p>
+
+    <button (click)="closeModal()">Close</button>
+  </div>
+</div>
+}
+```
+
 ### .set() vs .update()
 
 - Both are used to change the value of a Writeable signal
