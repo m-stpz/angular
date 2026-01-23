@@ -15,7 +15,6 @@ export class TaskItemComponent {
   constructor(private tasksService: TasksService) {}
 
   deleteTask() {
-    console.log('hey');
     this.tasksService.deleteTask(this.task.id);
   }
 }
