@@ -50,6 +50,23 @@ export class TasksService {
       });
   }
 
+  private findTask(id: Task['id']) {
+    return this._tasks().find((task) => task.id === id);
+  }
+
+  toggleTaskReminder(id: Task['id']) {
+    const taskToToggle = this.findTask(id);
+
+    if (taskToToggle) {
+      const updatedTask: Task = {
+        ...taskToToggle,
+        reminder: !taskToToggle.reminder,
+      };
+
+      this.updateTask(updatedTask);
+    }
+  }
+
   deleteTask(id: Task['id']) {
     this.http.delete(`${this.apiUrl}/${id}`).subscribe(() => {
       this._tasks.update((tasks) => tasks.filter((task) => task.id !== id));

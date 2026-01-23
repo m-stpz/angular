@@ -1,13 +1,20 @@
 <div
   class="task"
   [class.reminder]="task.reminder"
-  [class.active]="isActive()"
-  (click)="toggleActive()"
+  (click)="onToggleShowDetails()"
 >
   <div style="display: flex; justify-content: space-between">
     <h3>{{ task.text }}</h3>
 
-    <app-button text="x" color="red" (btnClick)="deleteTask()"></app-button>
+    <app-button text="x" color="red" (btnClick)="onDeleteTask()"></app-button>
+    <app-button
+      text="{{ task.reminder ? 'Remind' : 'Cancel remind' }}"
+      color="blue"
+      (btnClick)="onToggleTaskReminder()"
+    ></app-button>
   </div>
-  <p>{{ task.day }}</p>
+
+  @if (showDetails()) {
+    <p>{{ task.day }}</p>
+  }
 </div>

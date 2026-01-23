@@ -4,7 +4,7 @@
       "id": 4,
       "text": "Gym Workout",
       "day": "May 7th at 7:00am",
-      "reminder": true
+      "reminder": false
     },
     {
       "id": 5,
@@ -16,7 +16,7 @@
       "id": 6,
       "text": "Pay Utility Bills",
       "day": "May 8th at 10:00am",
-      "reminder": false
+      "reminder": true
     },
     {
       "id": 7,

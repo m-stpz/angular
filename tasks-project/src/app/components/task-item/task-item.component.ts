@@ -1,4 +1,4 @@
-import { Component, Input, signal } from '@angular/core';
+import { Component, inject, Input, signal } from '@angular/core';
 import { Task } from '../../types/task.type';
 import { ButtonComponent } from '../button/button.component';
 import { TasksService } from '../../services/tasks.service';
@@ -12,17 +12,19 @@ import { TasksService } from '../../services/tasks.service';
 export class TaskItemComponent {
   @Input({ required: true }) task!: Task;
 
-  // local state
-  isActive = signal(false);
+  private readonly tasksService = inject(TasksService);
 
-  constructor(private tasksService: TasksService) {}
+  showDetails = signal(false);
 
-  deleteTask() {
+  onDeleteTask() {
     this.tasksService.deleteTask(this.task.id);
   }
 
-  toggleActive() {
-    console.log('isActive', this.task.text);
-    this.isActive.update((val) => !val);
+  onToggleTaskReminder() {
+    this.tasksService.toggleTaskReminder(this.task.id);
+  }
+
+  onToggleShowDetails() {
+    this.showDetails.update((val) => !val);
   }
 }
