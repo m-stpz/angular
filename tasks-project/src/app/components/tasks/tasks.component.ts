@@ -12,4 +12,6 @@ export class TasksComponent {
   private readonly tasksService = inject(TasksService);
 
   tasks = this.tasksService.tasks;
+
+  // parent holds the truth of which tasks is being edited
 }

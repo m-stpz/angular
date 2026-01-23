@@ -1,4 +1,11 @@
-import { Component, inject, Input, signal } from '@angular/core';
+import {
+  Component,
+  EventEmitter,
+  inject,
+  Input,
+  Output,
+  signal,
+} from '@angular/core';
 import { Task } from '../../types/task.type';
 import { ButtonComponent } from '../button/button.component';
 import { TasksService } from '../../services/tasks.service';
@@ -13,6 +20,7 @@ import { JsonPipe } from '@angular/common';
 })
 export class TaskItemComponent {
   @Input({ required: true }) task!: Task;
+  @Output() edit = new EventEmitter<Task>();
 
   private readonly tasksService = inject(TasksService);
 
@@ -31,7 +39,8 @@ export class TaskItemComponent {
     this.showDetails.update((val) => !val);
   }
 
-  onSelectTask() {
-    this.selectedTask.set(this.task);
+  onSelectTask(event: MouseEvent) {
+    event.stopPropagation(); // stop the card from toggling details
+    this.edit.emit(this.task);
   }
 }
