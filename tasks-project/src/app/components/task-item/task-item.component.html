@@ -6,6 +6,9 @@
   <div style="display: flex; justify-content: space-between">
     <h3>{{ task.text }}</h3>
 
+    <app-button text="edit" color="green" (btnClick)="onSelectTask()"
+      >Edit</app-button
+    >
     <app-button text="x" color="red" (btnClick)="onDeleteTask()"></app-button>
     <app-button
       text="{{ task.reminder ? 'Remind' : 'Cancel remind' }}"
@@ -16,5 +19,11 @@
 
   @if (showDetails()) {
     <p>{{ task.day }}</p>
+  }
+
+  <pre>{{ selectedTask() | json }}</pre>
+
+  @if (selectedTask()) {
+    <app-modal></app-modal>
   }
 </div>
