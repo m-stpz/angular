@@ -1,4 +1,9 @@
-<div class="task" [class.example]="task.reminder">
+<div
+  class="task"
+  [class.reminder]="task.reminder"
+  [class.active]="isActive()"
+  (click)="toggleActive()"
+>
   <div style="display: flex; justify-content: space-between">
     <h3>{{ task.text }}</h3>
 
