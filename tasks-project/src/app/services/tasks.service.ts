@@ -8,7 +8,7 @@ import { HttpClient } from '@angular/common/http';
 })
 export class TasksService {
   private readonly http = inject(HttpClient);
-  private readonly apiUrl = 'http://localhost:5000/tasks';
+  private readonly apiUrl = 'http://localhost:5001/tasks';
   /*  
     service owns it
     private => no component can touch it
@@ -26,6 +26,10 @@ export class TasksService {
 
   constructor() {
     this.loadTasks();
+  }
+
+  debugTasks() {
+    console.log(this.tasks());
   }
 
   private loadTasks() {
