@@ -9,9 +9,18 @@
   }
 
   @for (task of tasks(); track task.id) {
-    <app-task-item
-      [task]="task"
-      (edit)="selectedTask.set($event)"
-    ></app-task-item>
+    <app-task-item [task]="task" (edit)="openEditModal(task)"></app-task-item>
+  }
+
+  @if (selectedTask(); as activeTask) {
+    <app-modal (closeModal)="onCloseModal()">
+      <h2>Editing: {{ activeTask.text }}</h2>
+
+      <app-button
+        text="Done"
+        color="blue"
+        (btnClick)="onCloseModal()"
+      ></app-button>
+    </app-modal>
   }
 </div>

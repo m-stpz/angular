@@ -38,8 +38,7 @@ export class TaskItemComponent {
     this.showDetails.update((val) => !val);
   }
 
-  onSelectTask(event: MouseEvent) {
-    event.stopPropagation(); // stop the card from toggling details
+  onEdit() {
     this.edit.emit(this.task);
   }
 }

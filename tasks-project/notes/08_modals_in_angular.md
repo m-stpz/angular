@@ -21,7 +21,7 @@ export class ModalComponent {
 ```
 
 ```html
-<div class="modal-backgroud" (click)="onClose()">
+<div class="modal-backdrop" (click)="onClose()">
   <div class="modal-content" (click)="$event.stopPropagation()">
     <!-- this is like {children} -->
     <ng-content></ng-content>
