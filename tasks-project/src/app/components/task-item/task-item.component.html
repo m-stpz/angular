@@ -1,8 +1,5 @@
-<div
-  class="task"
-  [class.reminder]="task.reminder"
-  (click)="onToggleShowDetails()"
->
+<div class="task" [class.reminder]="task.reminder">
+  <div (click)="onToggleShowDetails($event)">v</div>
   <div style="display: flex; justify-content: space-between">
     <h3>{{ task.text }}</h3>
 

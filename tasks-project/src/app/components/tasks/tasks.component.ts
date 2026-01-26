@@ -1,6 +1,7 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
 import { TasksService } from '../../services/tasks.service';
 import { TaskItemComponent } from '../task-item/task-item.component';
+import { Task } from '../../types/task.type';
 
 @Component({
   selector: 'app-tasks',
@@ -14,4 +15,9 @@ export class TasksComponent {
   tasks = this.tasksService.tasks;
 
   // parent holds the truth of which tasks is being edited
+  selectedTask = signal<Task | null>(null);
+
+  onCloseModal() {
+    this.selectedTask.set(null);
+  }
 }

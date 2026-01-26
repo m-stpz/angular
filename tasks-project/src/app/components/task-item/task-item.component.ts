@@ -9,12 +9,10 @@ import {
 import { Task } from '../../types/task.type';
 import { ButtonComponent } from '../button/button.component';
 import { TasksService } from '../../services/tasks.service';
-import { ModalComponent } from '../modal/modal.component';
-import { JsonPipe } from '@angular/common';
 
 @Component({
   selector: 'app-task-item',
-  imports: [ButtonComponent, ModalComponent, JsonPipe],
+  imports: [ButtonComponent],
   templateUrl: './task-item.component.html',
   styleUrl: './task-item.component.css',
 })
@@ -35,7 +33,8 @@ export class TaskItemComponent {
     this.tasksService.toggleTaskReminder(this.task.id);
   }
 
-  onToggleShowDetails() {
+  onToggleShowDetails(event: MouseEvent) {
+    event.stopPropagation();
     this.showDetails.update((val) => !val);
   }
 
