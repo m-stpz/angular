@@ -15,8 +15,6 @@ const HEADER_CONFIG = {
   },
 };
 
-const ALLOW_ORIGINS = "";
-
 const jsonServer = require("json-server");
 const server = jsonServer.create();
 const router = jsonServer.router(DB_FILE);

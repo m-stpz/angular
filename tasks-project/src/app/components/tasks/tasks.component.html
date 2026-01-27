@@ -14,13 +14,24 @@
 
   @if (selectedTask(); as activeTask) {
     <app-modal (closeModal)="onCloseModal()">
-      <h2>Editing: {{ activeTask.text }}</h2>
+      <form [formGroup]="editForm" (ngSubmit)="onSave()">
+        <div>
+          <label>Task</label>
+          <input type="text" formControlName="text" />
+        </div>
 
-      <app-button
-        text="Done"
-        color="blue"
-        (btnClick)="onCloseModal()"
-      ></app-button>
+        <div>
+          <label>Day & time</label>
+          <input type="text" formControlName="day" />
+        </div>
+
+        <div>
+          <label>Reminder</label>
+          <input type="checkbox" formControlName="reminder" />
+        </div>
+
+        <button type="submit">Save</button>
+      </form>
     </app-modal>
   }
 </div>
