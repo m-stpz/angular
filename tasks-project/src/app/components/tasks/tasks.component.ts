@@ -29,14 +29,19 @@ export class TasksComponent {
 
   // parent holds the truth of which tasks is being edited
   selectedTask = signal<Task | null>(null);
+  showModal = signal(false);
 
+  openCreateModal() {
+    this.selectedTask.set(null);
+    this.editForm.reset();
+    this.showModal.set(true);
+  }
+
+  // to continue: add the button to open the create modal on the ui
   openEditModal(task: Task) {
     this.selectedTask.set(task);
     this.editForm.patchValue(task);
-  }
-
-  onCloseModal() {
-    this.selectedTask.set(null);
+    this.showModal.set(true);
   }
 
   // since the modal is just a shell, the editing lives within the tasks
@@ -45,10 +50,23 @@ export class TasksComponent {
       return;
     }
 
-    const original = this.selectedTask();
-    const updatedTask = { ...original, ...this.editForm.value } as Task;
+    const formData = this.editForm.value as Task;
 
-    this.tasksService.updateTask(updatedTask);
+    if (this.selectedTask()) {
+      // edit mode
+      const original = this.selectedTask();
+      const updatedTask = { ...original, ...formData } as Task;
+      this.tasksService.updateTask(updatedTask);
+    } else {
+      // create
+      this.tasksService.createTask(formData);
+    }
+
     this.onCloseModal();
+  }
+
+  onCloseModal() {
+    this.showModal.set(false);
+    this.selectedTask.set(null);
   }
 }
