@@ -4,7 +4,7 @@
       "id": 4,
       "text": "Gym Workout",
       "day": "May 7th at 7:00am",
-      "reminder": false
+      "reminder": true
     },
     {
       "id": 5,
