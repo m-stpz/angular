@@ -1,0 +1,4 @@
+- User should be able to:
+- [ ] add a task from the ui
+- [x] edit existing task
+- [x] remove existing task

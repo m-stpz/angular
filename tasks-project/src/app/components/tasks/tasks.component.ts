@@ -3,7 +3,6 @@ import { TasksService } from '../../services/tasks.service';
 import { TaskItemComponent } from '../task-item/task-item.component';
 import { Task } from '../../types/task.type';
 import { ModalComponent } from '../modal/modal.component';
-import { ButtonComponent } from '../button/button.component';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 
 @Component({
@@ -11,7 +10,7 @@ import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
   imports: [
     TaskItemComponent,
     ModalComponent,
-    ButtonComponent,
+    // ButtonComponent,
     ReactiveFormsModule,
   ],
   templateUrl: './tasks.component.html',
