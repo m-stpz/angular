@@ -5,6 +5,7 @@ import { Task } from '../../types/task.type';
 import { ModalComponent } from '../modal/modal.component';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ButtonComponent } from '../button/button.component';
+import { NgStyle } from '../../../../node_modules/@angular/common/common_module.d-NEF7UaHr';
 
 @Component({
   selector: 'app-tasks',
@@ -13,6 +14,7 @@ import { ButtonComponent } from '../button/button.component';
     ModalComponent,
     ReactiveFormsModule,
     ButtonComponent,
+    NgStyle,
   ],
   templateUrl: './tasks.component.html',
   styleUrl: './tasks.component.css',

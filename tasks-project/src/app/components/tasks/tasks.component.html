@@ -1,5 +1,11 @@
-<div>
-  <app-button text="Add text" (btnClick)="openCreateModal()"></app-button>
+<div [style.top]="'20px'">
+  <app-button
+    text="Add task"
+    (btnClick)="openCreateModal()"
+    [ngStyle]="{
+      'margin-top': '20px',
+    }"
+  ></app-button>
 
   <div class="task-list">
     @if (!tasks().length) {

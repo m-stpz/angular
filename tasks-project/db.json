@@ -1,18 +1,6 @@
 {
   "tasks": [
     {
-      "id": 4,
-      "text": "111111",
-      "day": "May 7th at 8:00am",
-      "reminder": true
-    },
-    {
-      "id": 5,
-      "text": "Client Call",
-      "day": "May 7th at 3:00pm",
-      "reminder": true
-    },
-    {
       "id": 6,
       "text": "Pay Utility Bills",
       "day": "May 8th at 10:00am",

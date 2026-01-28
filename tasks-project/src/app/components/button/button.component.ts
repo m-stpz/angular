@@ -14,7 +14,8 @@ import { ButtonColor } from './button.types';
   styleUrl: './button.component.css',
 })
 export class ButtonComponent {
-  @Input({ required: true }) text!: string;
+  @Input() text!: string;
+  @Input() type: 'button' | 'submit' = 'button';
   @Input() color: ButtonColor = 'blue';
   @Output() btnClick = new EventEmitter();
 

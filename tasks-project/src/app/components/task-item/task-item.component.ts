@@ -9,10 +9,11 @@ import {
 import { Task } from '../../types/task.type';
 import { ButtonComponent } from '../button/button.component';
 import { TasksService } from '../../services/tasks.service';
+import { LucideAngularModule, SquarePen, Trash } from 'lucide-angular';
 
 @Component({
   selector: 'app-task-item',
-  imports: [ButtonComponent],
+  imports: [ButtonComponent, LucideAngularModule],
   templateUrl: './task-item.component.html',
   styleUrl: './task-item.component.css',
 })
@@ -21,6 +22,8 @@ export class TaskItemComponent {
   @Output() edit = new EventEmitter<Task>();
 
   private readonly tasksService = inject(TasksService);
+  readonly EditIcon = SquarePen;
+  readonly DeleteIcon = Trash;
 
   showDetails = signal(false);
   selectedTask = signal<Task | null>(null);

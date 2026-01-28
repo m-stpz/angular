@@ -1,18 +1,30 @@
 <div class="task" [class.reminder]="task.reminder">
-  <div (click)="onToggleShowDetails($event)">v</div>
-  <div style="display: flex; justify-content: space-between">
+  <div>
     <h3>{{ task.text }}</h3>
+  </div>
 
-    <app-button text="x" color="red" (btnClick)="onDeleteTask()"></app-button>
+  <div class="task-controls">
     <app-button
       text="{{ task.reminder ? 'Remind' : 'Cancel remind' }}"
       color="blue"
       (btnClick)="onToggleTaskReminder()"
     ></app-button>
-    <app-button color="green" (btnClick)="onEdit()" text="Edit"> </app-button>
+
+    <div class="task-controls-edit-delete">
+      <app-button color="red" (btnClick)="onDeleteTask()">
+        <lucide-icon [img]="DeleteIcon" size="18px"></lucide-icon>
+      </app-button>
+
+      <app-button color="green" (btnClick)="onEdit()">
+        <lucide-icon [img]="EditIcon" size="18px"></lucide-icon>
+      </app-button>
+    </div>
   </div>
 
-  @if (showDetails()) {
+  <!-- <div (click)="onToggleShowDetails($event)">v</div> -->
+  <div style="display: flex; justify-content: space-between"></div>
+
+  <!-- @if (showDetails()) {
     <p>{{ task.day }}</p>
-  }
+  } -->
 </div>
