@@ -4,14 +4,15 @@ import { TaskItemComponent } from '../task-item/task-item.component';
 import { Task } from '../../types/task.type';
 import { ModalComponent } from '../modal/modal.component';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
+import { ButtonComponent } from '../button/button.component';
 
 @Component({
   selector: 'app-tasks',
   imports: [
     TaskItemComponent,
     ModalComponent,
-    // ButtonComponent,
     ReactiveFormsModule,
+    ButtonComponent,
   ],
   templateUrl: './tasks.component.html',
   styleUrl: './tasks.component.css',
@@ -37,7 +38,6 @@ export class TasksComponent {
     this.showModal.set(true);
   }
 
-  // to continue: add the button to open the create modal on the ui
   openEditModal(task: Task) {
     this.selectedTask.set(task);
     this.editForm.patchValue(task);

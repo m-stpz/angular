@@ -1,37 +1,43 @@
-<div class="task-list">
-  @if (!tasks().length) {
-    <p>No tasks! Congrats, all achieved.</p>
-  } @else {
-    <p>
-      You have {{ tasks().length }}
-      {{ tasks().length === 1 ? "task" : "tasks" }}
-    </p>
-  }
+<div>
+  <app-button text="Add text" (btnClick)="openCreateModal()"></app-button>
 
-  @for (task of tasks(); track task.id) {
-    <app-task-item [task]="task" (edit)="openEditModal(task)"></app-task-item>
-  }
+  <div class="task-list">
+    @if (!tasks().length) {
+      <p>No tasks! Congrats, all achieved.</p>
+    } @else {
+      <p>
+        You have {{ tasks().length }}
+        {{ tasks().length === 1 ? "task" : "tasks" }}
+      </p>
+    }
 
-  @if (selectedTask(); as activeTask) {
-    <app-modal (closeModal)="onCloseModal()">
-      <form [formGroup]="editForm" (ngSubmit)="onSave()">
-        <div>
-          <label>Task</label>
-          <input type="text" formControlName="text" />
-        </div>
+    @for (task of tasks(); track task.id) {
+      <app-task-item [task]="task" (edit)="openEditModal(task)"></app-task-item>
+    }
 
-        <div>
-          <label>Day & time</label>
-          <input type="text" formControlName="day" />
-        </div>
+    @if (showModal()) {
+      <app-modal (closeModal)="onCloseModal()">
+        <h2>{{ selectedTask() ? "Edit " : "Add" }} task</h2>
 
-        <div>
-          <label>Reminder</label>
-          <input type="checkbox" formControlName="reminder" />
-        </div>
+        <form [formGroup]="editForm" (ngSubmit)="onSave()">
+          <div class="form-control">
+            <label>Task</label>
+            <input type="text" formControlName="text" />
+          </div>
 
-        <button type="submit">Save</button>
-      </form>
-    </app-modal>
-  }
+          <div class="form-control">
+            <label>Day & time</label>
+            <input type="text" formControlName="day" />
+          </div>
+
+          <div class="form-control">
+            <label>Reminder</label>
+            <input type="checkbox" formControlName="reminder" />
+          </div>
+
+          <button type="submit">Save</button>
+        </form>
+      </app-modal>
+    }
+  </div>
 </div>
