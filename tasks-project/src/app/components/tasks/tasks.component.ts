@@ -5,7 +5,7 @@ import { Task } from '../../types/task.type';
 import { ModalComponent } from '../modal/modal.component';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ButtonComponent } from '../button/button.component';
-import { NgStyle } from '../../../../node_modules/@angular/common/common_module.d-NEF7UaHr';
+import { NgStyle } from '@angular/common';
 
 @Component({
   selector: 'app-tasks',
@@ -33,6 +33,14 @@ export class TasksComponent {
   // parent holds the truth of which tasks is being edited
   selectedTask = signal<Task | null>(null);
   showModal = signal(false);
+
+  onDeleteTask(id: Task['id']) {
+    this.tasksService.deleteTask(id);
+  }
+
+  onToggleReminder(id: Task['id']) {
+    this.tasksService.toggleTaskReminder(id);
+  }
 
   openCreateModal() {
     this.selectedTask.set(null);

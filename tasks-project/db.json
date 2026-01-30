@@ -4,19 +4,19 @@
       "id": 6,
       "text": "Pay Utility Bills",
       "day": "May 8th at 10:00am",
-      "reminder": true
+      "reminder": false
     },
     {
       "id": 7,
       "text": "Project Code Review",
       "day": "May 8th at 4:00pm",
-      "reminder": true
+      "reminder": false
     },
     {
       "id": 8,
       "text": "Dinner with Friends",
       "day": "May 9th at 8:00pm",
-      "reminder": true
+      "reminder": false
     },
     {
       "id": 9,
@@ -28,12 +28,12 @@
       "id": 10,
       "text": "Weekly Planning Session",
       "day": "May 11th at 9:30am",
-      "reminder": true
+      "reminder": false
     },
     {
       "text": "test create",
       "day": "today",
-      "reminder": true,
+      "reminder": false,
       "id": 11
     }
   ]

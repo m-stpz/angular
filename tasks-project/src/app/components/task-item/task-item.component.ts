@@ -19,29 +19,19 @@ import { LucideAngularModule, SquarePen, Trash } from 'lucide-angular';
 })
 export class TaskItemComponent {
   @Input({ required: true }) task!: Task;
-  @Output() edit = new EventEmitter<Task>();
 
-  private readonly tasksService = inject(TasksService);
+  // emit to the parent
+  @Output() edit = new EventEmitter<Task>();
+  @Output() delete = new EventEmitter<number>();
+  @Output() toggleReminder = new EventEmitter<number>();
+
   readonly EditIcon = SquarePen;
   readonly DeleteIcon = Trash;
 
   showDetails = signal(false);
-  selectedTask = signal<Task | null>(null);
-
-  onDeleteTask() {
-    this.tasksService.deleteTask(this.task.id);
-  }
-
-  onToggleTaskReminder() {
-    this.tasksService.toggleTaskReminder(this.task.id);
-  }
 
   onToggleShowDetails(event: MouseEvent) {
     event.stopPropagation();
     this.showDetails.update((val) => !val);
-  }
-
-  onEdit() {
-    this.edit.emit(this.task);
   }
 }
