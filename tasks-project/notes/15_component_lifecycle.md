@@ -1,11 +1,18 @@
 # Component Lifecycles
 
-## 1. ngOnInit
+## 1. ngOnChanges
+
+- Very first hook to run (before `ngOnInit`)
+- Triggers everytime an `@Input()` property changes
+- Good for:
+  - re-calculate something every time a user passes in a new value from a parent component
+
+## 2. ngOnInit
 
 - Most common hook
 - Runs after Angular has finished initializing the component's input properties
 - Runs:
-  - after constructor
+  - after constructor & ngOnChanges
   - before render
 
 Constructor -> ngOnInit -> render
@@ -13,13 +20,6 @@ Constructor -> ngOnInit -> render
 - Good for:
   - fetching data from API/service
   - setting up initial logic based on `@Input()` values
-
-## 2. ngOnChanges
-
-- Very first hook to run (before `ngOnInit`)
-- Triggers everytime an `@Input()` property changes
-- Good for:
-  - re-calculate something every time a user passes in a new value from a parent component
 
 ## 3. ngAfterViewInit
 
@@ -96,6 +96,7 @@ export class UserProfileComponent implements OnInit, OnChanges, AfterViewInit, O
 
   // 2. fires when `@Input()` value changes
   ngOnChanges(changes: SimpleChanges) {
+    // good for: recalculate smt if input value changes
     if (changes["userId"] && !changes["userId"].firstChange) {
       console.log(`id changed from ${changes["userId"].previousValue}`);
       this.loadUserData(); // refresh data if ID changes later
@@ -104,18 +105,21 @@ export class UserProfileComponent implements OnInit, OnChanges, AfterViewInit, O
 
   // 3. initial data loads
   ngOnInit() {
+    // good for: fetch data
     // inputs ready | html (ViewChild) isn't
     this.loadUserData();
   }
 
   // 4. html is rendered
   ngAfterViewInit() {
+    // good for: dom manipulation
     // good for 3rd-party libs (google maps/charts)
     this.initializeMap(this.mapElement.nativeElement);
   }
 
   // 5. cleanup
   ngOnDestroy() {
+    // good for: cleanup sub
     // stops subs, so it doesn't run on the background
     if (this.sub) {
       this.sub.unsubscribe();
