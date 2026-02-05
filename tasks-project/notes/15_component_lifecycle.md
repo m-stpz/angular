@@ -66,6 +66,10 @@ ngOnDestroy: `this.subscription.unsubscribe()`
 - OnDestroy: component is killed
   - clean up subs | timers
 
+onChanges | onInit | afterViewInit | onDestroy
+
+> cia destroys
+
 ## Example
 
 ```ts
@@ -85,18 +89,47 @@ export class UserProfileComponent implements OnInit, OnChanges, AfterViewInit, O
   user: User;
   private sub: Subscription;
 
+  // 1. only for DI (dependency injection)
   constructor(private userService: UserService) {
-    // only for DI (dependency injection)
     // elements and inputs aren't ready
   }
 
+  // 2. fires when `@Input()` value changes
   ngOnChanges(changes: SimpleChanges) {
-    // fires when `@Input()` value changes
-
     if (changes["userId"] && !changes["userId"].firstChange) {
       console.log(`id changed from ${changes["userId"].previousValue}`);
       this.loadUserData(); // refresh data if ID changes later
     }
+  }
+
+  // 3. initial data loads
+  ngOnInit() {
+    // inputs ready | html (ViewChild) isn't
+    this.loadUserData();
+  }
+
+  // 4. html is rendered
+  ngAfterViewInit() {
+    // good for 3rd-party libs (google maps/charts)
+    this.initializeMap(this.mapElement.nativeElement);
+  }
+
+  // 5. cleanup
+  ngOnDestroy() {
+    // stops subs, so it doesn't run on the background
+    if (this.sub) {
+      this.sub.unsubscribe();
+    }
+  }
+
+  private loadUserData() {
+    this.sub = this.userService.getUser(this.userId).subscribe((data) => {
+      this.user = data;
+    });
+  }
+
+  private initializeMap(element: HTMLElement) {
+    // logic to render map
   }
 }
 ```
