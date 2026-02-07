@@ -6,7 +6,7 @@
 | -------------------- | --------------------------------------------- | ------------------------------ |
 | Template             | Structural directive: *ngIf, *ngFor           | Control Flow: @if, @for        |
 | Dependency Injection | constructor                                   | inject()                       |
-| State reactivity     | RxJS & Observables, subscribe and unsubscribe | signals                        |
+| State reactivity     | RxJS & Observables, subscribe and unsubscribe | signal()                       |
 | Input/Output         | Decorators @Input() and @Output()             | functions input() and output() |
 
 ## Template: Structural Directive vs. Control Flow
