@@ -1,4 +1,4 @@
-# 1. NgRx ComponentStore
+# NgRx ComponentStore
 
 - Middle ground of angular state management
 - Wrapper around `BehaviorSubject`
@@ -8,8 +8,32 @@
 - ComponentStore
   - State is bound to the component's lifecycle
   - when component is destroyed (`ngOnDestroy`), the store is wiped from memory
+  - When a class extends `ComponentStore<T>` it becomes a **State machine**
+    - It gains access to a specialized toolbox designed to manage streams of data and UI states without the need of `BehaviorSubjects`
 
-## 1.2 Functional structure
+## 1. Concepts
+
+### 1.1. Foundation - `super(initialState)`
+
+- The class must call in its constructor super(). This boots up the store with its starting data
+
+### 1.2. Observer - `this.select()`
+
+- How you pull data out of the store
+- Creates an Observable of a specified slice/property of your state
+- Reactive and memoized
+  - You have a state with 100 properties, but you `select` the `username`, the observable will only fire when `username` changes
+    - It ignores the other 99 properties
+
+```ts
+readonly name$ = this.select(state => state.name)
+```
+
+### 1.3. Writers
+
+**to_continue**
+
+## 2. Functional structure
 
 - Instead of four different files, everything is contained within a single class that extends `ComponentStore`
 
