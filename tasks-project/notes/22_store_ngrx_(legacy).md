@@ -1,15 +1,8 @@
-# Store Angular
-
-- Single source of truth
-- Avoid prop drilling
-- If data is changed in one place, every component, which uses it, is updated
-- Store = client-side db that lives in the browser's memory
-
-## 1. Legacy: NgRx (Redux Pattern)
+## Legacy: NgRx (Redux Pattern)
 
 - Follows Redux pattern: actions, reducers, and selectors
 
-### 1.1 Workflow
+### 1 Overview
 
 - Action: unique event (e.g., `[UserPage] Load Data`)
   - state/action: intent
@@ -31,7 +24,7 @@ state.user = "Bob";
 return { ...state, user: "Bob" };
 ```
 
-### 1.2 The definitions (state & action)
+### 2 The definitions (state & action)
 
 - Define:
   - what data looks like
@@ -40,7 +33,7 @@ return { ...state, user: "Bob" };
 ```ts
 import { createAction, props, createReducer, on, createSelector } from "@ngrx/store";
 
-// 1. state interface
+//  state interface
 export interface UserState {
   profile: Profile | null;
   loading: boolean;
@@ -51,7 +44,7 @@ export const loadUser = createAction("[User] load", props<{ id: string }>());
 export const loadUserSuccess = createAction("[User] success", props<{ data: Profile }>());
 ```
 
-### 1.3 The logic (reducers & selectors)
+### 3 The logic (reducers & selectors)
 
 - Reducer: decides how the state changes
 - Selector: helps components grab the portion/slice they need
@@ -69,4 +62,47 @@ export const userReducere = createReducer(
 // 4. selectors -> the slicers
 export const selectUserState = (state: Profile) => state.user;
 export const selectProfile = createSelector(selectUserState, (state) => state.profile);
+```
+
+### 4 The side-effect
+
+- They watch for the `action`, go to the database/api, and then "dispatch" a success action
+
+```ts
+import { inject, Injectable } from "@angular/core";
+import { Actions, createEffect, ofType } from "@ngrx/effects";
+import { map, switchMap } from "rxjs";
+
+@Injectable()
+export class UserEffect {
+  private actions$ = inject(Actions);
+  private api = inject(ApiService);
+
+  loadUser$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(loadUser),
+      switchMap((action) => this.api.getUser(action.id).pipe(map((data) => loadUserSuccess({ data })))),
+    ),
+  );
+}
+```
+
+### 5 The component (usage)
+
+```ts
+@Component({
+  standalone: true,
+  imports: [AsyncPipe, JsonPipe],
+  template: `
+        <div *ngIf-"user$ | async as user">
+            {{user | json}}
+        </div>
+    `,
+})
+export class ProfileComponent {
+  private store = inject(Store);
+
+  // use selector to get data
+  users$ = this.store.select(selectProfile);
+}
 ```
