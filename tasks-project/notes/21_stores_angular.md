@@ -20,4 +20,37 @@
 | Hybrid   | BehaviorSubject     | `.next()`, `asObservable()`, `tap()`   |
 | Modern   | Signals/SignalStore | `signal()`, `patchState`, `effect()`   |
 
-## Princples
+## Principles
+
+### 1. Read-only UI | Unidirectional data flow
+
+- Component never directly modifies data it gets from the store. It should be a one-way street
+
+1. Store sends data down to the component
+2. Component sends actions/events up to the store
+
+```ts
+// ❌
+this.user.name = "New name"; // modifying reference
+
+// ✅
+this.store.dispatch(updateName({ name: "New name" }));
+```
+
+### 2. Thin component, fat store
+
+- Inside your component's TS, avoid heavy operations
+  - it shouldn't use too much `.filter()`, `.map()`
+  - the store should do it
+- Move that logic into the store
+  - selector (NgRx)
+  - Computed signal
+  - Component should receive data that is 'ready to wear'
+
+### 3. Categorize state
+
+| State type | Where it lives                  | Example                            |
+| ---------- | ------------------------------- | ---------------------------------- |
+| Global     | Global service                  | Auth, User Profile, Theme          |
+| Feature    | ComponentStore / Feature module | Search results, current pagination |
+| Local      | Component variables             | isDropdownOpen, isHovered          |
