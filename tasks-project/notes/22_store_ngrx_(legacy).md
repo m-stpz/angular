@@ -1,8 +1,8 @@
-## Legacy: NgRx (Redux Pattern)
+# Legacy: NgRx (Redux Pattern)
 
 - Follows Redux pattern: actions, reducers, and selectors
 
-### 1 Overview
+## 1. Overview
 
 - Action: unique event (e.g., `[UserPage] Load Data`)
   - state/action: intent
@@ -24,7 +24,7 @@ state.user = "Bob";
 return { ...state, user: "Bob" };
 ```
 
-### 2 The definitions (state & action)
+## 2. The definitions (state & action)
 
 - Define:
   - what data looks like
@@ -44,7 +44,7 @@ export const loadUser = createAction("[User] load", props<{ id: string }>());
 export const loadUserSuccess = createAction("[User] success", props<{ data: Profile }>());
 ```
 
-### 3 The logic (reducers & selectors)
+## 3. The logic (reducers & selectors)
 
 - Reducer: decides how the state changes
 - Selector: helps components grab the portion/slice they need
@@ -64,7 +64,7 @@ export const selectUserState = (state: Profile) => state.user;
 export const selectProfile = createSelector(selectUserState, (state) => state.profile);
 ```
 
-### 4 The side-effect
+## 4. The side-effect
 
 - They watch for the `action`, go to the database/api, and then "dispatch" a success action
 
@@ -87,7 +87,7 @@ export class UserEffect {
 }
 ```
 
-### 5 The component (usage)
+## 5. The component (usage)
 
 ```ts
 @Component({
@@ -105,4 +105,35 @@ export class ProfileComponent {
   // use selector to get data
   users$ = this.store.select(selectProfile);
 }
+```
+
+## 6. File structure
+
+### Feature folder pattern (most common)
+
+```
+src/app/features/users/
+├── data-access/               <-- The "State" layer
+│   ├── users.actions.ts
+│   ├── users.reducer.ts
+│   ├── users.effects.ts
+│   ├── users.selectors.ts
+│   └── users.state.ts         (Optional: defines the interface)
+├── ui/                        <-- Presentational components
+├── users.component.ts         <-- Smart component
+└── users.module.ts            <-- Feature module
+```
+
+### State folder (centralized)
+
+```
+src/app/core/state/
+├── auth/
+│   ├── auth.actions.ts
+│   └── ...
+├── products/
+│   ├── products.actions.ts
+│   └── ...
+├── app.state.ts               <-- The "Root" state interface
+└── index.ts                   <-- Common exports
 ```
