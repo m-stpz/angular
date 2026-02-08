@@ -13,6 +13,11 @@
 
 ## 1. Concepts
 
+- ComponentStore offers:
+  - `.select()`: to grab slice of state
+  - `.update()` and `.patchState()`: to update state
+  - `.effect()`: to deal with side effects
+
 ### 1.1. Foundation - `super(initialState)`
 
 - The class must call in its constructor super(). This boots up the store with its starting data
@@ -60,6 +65,8 @@ export class MyStore extends ComponentStore<MyStoreState> {
 - It's an Observable of the entire state object
   - Observable: interface to handle async operations
     - Observing a value over time
+- While it's possible to use `this.state$`, it's best practice to use `this.select()` instead
+  - Select small "slices" of data keeps the component's change detection faster and more efficient
 
 ## 2. Functional structure
 
