@@ -41,6 +41,12 @@ export class TasksService {
       - continuous data stream
       - transform the data with pipes
 
+### Observables
+
+- Observable: representation of multiple future values
+  - Stream of values
+- Promise: representation on a single future value
+
 ```ts
 this.http.get(...).subscribe(...)
 ```

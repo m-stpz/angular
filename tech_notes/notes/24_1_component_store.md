@@ -29,9 +29,37 @@
 readonly name$ = this.select(state => state.name)
 ```
 
-### 1.3. Writers
+### 1.3. Writers - `this.updater()` and `this.patchState()`
 
-**to_continue**
+- The only two ways to change data inside the store
+
+- patchState (quick & dirty): best for simple update like toggling a loading spinner
+  - `this.patchState({loading: true})`
+- updater (professional way): used for complex state, where the new state depends on the old one
+
+```ts
+export class MyStore extends ComponentStore<MyStoreState> {
+  readonly addUser = this.updater((state, newItem: Item) => ({
+    ...state,
+    items: [...state.items, newItem],
+  }));
+}
+```
+
+### 1.4. Orchestrator - `this.effect()`
+
+- Most important power for dealing with "large databases" or APIs
+- It manages async side effects (api calls, timers, websockets)
+- Automatically handles the "subscription management"
+  - When effect is defined. it creates a long-lived stream that listens for inputs
+- Allows to easily use RxJS operators like `switchMap` (cancel old requests) or `concatMap` (queue requests) inside the component itself
+
+### 1.5. `state$`
+
+- By extending the store, the component also gets a `this.state$` property
+- It's an Observable of the entire state object
+  - Observable: interface to handle async operations
+    - Observing a value over time
 
 ## 2. Functional structure
 
