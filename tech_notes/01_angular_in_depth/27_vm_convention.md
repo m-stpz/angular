@@ -7,6 +7,7 @@
 
 - ViewModel = "specific slices of state bundled together"
   - abstraction of the view state, serving as a data-binding bridge between the model (store/db) and the view (html)
+  - single, read-only object that consolidates multiple async streams into a sync-looking snapshot for the template
 
 ## 1. Before vs. After
 
@@ -81,4 +82,22 @@ export class UserListViewComponent extends ComponentStore<UserState> {
 
 ```ts
 // modern signal-based ViewModel
+class MyClass {
+  readonly vm = computed(() => ({
+    users: this.usersSignal(),
+    loading: this.loadingSignal(),
+    error: this.errorSignal(),
+  }));
+}
 ```
+
+- In the HTML, we access it as `vm().users` instead of using the `async` pipe, which is used for Observables
+
+## 4. Rules
+
+| Rule          | Description                                                                                      |
+| ------------- | ------------------------------------------------------------------------------------------------ |
+| Naming        | Always name it as `vm$` (if Observable) or `vm` (if Signal)                                      |
+| Placement     | Usually the very first line of the html, within an `ng-container`                                |
+| Purity        | the `vm$` should only contain data needed for the **view**. No logic or service references in it |
+| Consolidation | If you have more than 2 observables in a template, you should probably be using `vm`             |
