@@ -2,7 +2,23 @@
 
 ## Overview
 
+- This is called Clean Architecture for Enterprise Angular or Layered Reactive Architecture
+
 Component -> Store -> API Service -> Cloud function -> Services -> Repo -> DB
+
+| Layer          | Responsibility                       | Pattern name             |
+| -------------- | ------------------------------------ | ------------------------ |
+| Component      | Rendering UI / User input            | Presenter                |
+| Store          | Component-specific / UI logic        | ComponentStore           |
+| API Service    | Request formatting / dispatching     | Gateway                  |
+| Cloud function | Security / auth / routing            | Controller               |
+| Service layer  | Business logic / rules / validations | Domain service           |
+| Repository     | firestore path building / CRUD       | Data access object (DAO) |
+
+> Outer layers can see inner layers, but inner layers should never see outer layers
+
+- The component (outer) can see the store (inner)
+- The store (inner) should never know which component is using it
 
 ### Part 1: The frontend
 
@@ -157,9 +173,9 @@ export const featureFunction = async (data: any, context: CallableRequest) => {
 
   if (!auth.isAuthenticated()) {
     throw new HttpsError("unauthenticated", "stop!");
-
-    return await Container.get(FeatureUtilsService).execute(data);
   }
+
+  return await Container.get(FeatureUtilsService).execute(data);
 };
 ```
 
