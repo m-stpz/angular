@@ -17,14 +17,14 @@
 - They represent a stream of data over time
 - It needs to be subscribed to do something
 
-## Subscriptions: the consumer of the data
+### Subscriptions: the consumer of the data
 
 - They represent the execution of an Observable, crucial for managing the lifecycle and canceling async tasks
 - The **act of listening** to an Observable
   - html: `| async` pipe
   - ts: `subscribe()`
 
-### HTML `| async` pipe
+#### HTML `| async` pipe
 
 - Automatic way to listen to an Observable
 - If we find ourselves writing `.subscribe()` inside the component's ts just to get the data onto the screen, likely `| async` pipe would be enough
@@ -36,7 +36,7 @@
 <ng-template #loading></ng-template>
 ```
 
-### TS `.subscribe()`
+#### TS `.subscribe()`
 
 - Manual way to listen
 - Use this when you need to perform logic in the background
@@ -64,7 +64,7 @@ export class UserDetailComponent implements OnInit, onDestroy {
 
 - We should move subscription here when we need to **trigger a secondary action**, a side-effect, that the HTML can't handle
 
-#### When we don't need it
+##### When we don't need it
 
 ```ts
 readonly user$ = this._store.select(s => s.user) // we don't need an extra user local variable
@@ -75,7 +75,7 @@ readonly user$ = this._store.select(s => s.user) // we don't need an extra user 
 <div *ngIf="user$ | async as user">...</div>
 ```
 
-#### When we need it
+##### When we need it
 
 - After something happened, we need to perform another operation
 - HTML can't "close a dialog" or "navigate", then we need to listen to the stream result in the ts
@@ -94,23 +94,59 @@ ngOnInit(){
 }
 ```
 
-## Operators: the transformer
+### Operators: the transformer
 
 - Pure functions that enable functional programming to manipulate data, such as `map`, `filter`, `concat`, and `reduce`
 - They allow us to change the data as it moves through the pipe
 
-## Subjects: the multi-caster
+### Subjects: the multi-caster
 
 - A special type of Observable that allows values to be multicasted to many Observers
 - It can both emit and listen to data
   - This is what powers `BehaviorSubject` on the store
 
-## Observers
+### Observers
 
 - collection of callbacks that listen to values delivered by the Observable
 
-##
+## Operators
 
+### The core concept: `.pipe()`
+
+- It's an assembly line
+- The raw data enters the line, and we add "stations" (operators) to modify it before it reaches the end
+
+```ts
+this.user$
+  .pipe(
+      ---
+      // station 1: transform
+      // station 2: filter
+      // station 3: handle
+      ---
+  ).subscribe()
 ```
 
-```
+### Transformation operators
+
+- `map`: modifier
+  - It changes the data, like standard JS
+- `tap`: spy
+  - Used to perform "side effects" without changing the data itself
+  - e.g.: trigger loading a spinner before an api call
+
+### Higher-order mapping
+
+- Used inside **effects** to handle api calls
+- They decide what happens if a new request comes in while an old one is still running
+
+- `switchMap`: latestOnly
+  - If new value arrives, cancels the previous inner observable
+  - Good for: search bars, tab switching
+
+- `concatMap`: queue
+  - It waits for the previous call to finish before starting the next one
+  - Good for: save operations where order matters
+
+- `exhaustMap`: ignore
+  - It ignores new inputs until the current one is finished
