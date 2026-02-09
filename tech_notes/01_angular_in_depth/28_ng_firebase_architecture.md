@@ -60,9 +60,101 @@ await this._apiService.submitData(...)
    - Triggers real-time updates
    - Enforces security rules
 
-## Layer 1. The
+## Part 1. The frontend
+
+### Layer 1: component (`.component.ts`)
 
 - Role: The "presenter"
 - Handles user input and displays the `vm$`
 
-**to_continue_with_mapping_and_examples**
+```ts
+@Component({
+  selector: "wd-feature-name",
+  providers: [FeatureStore],
+  template: `<ng-container *ngIf="vm$ | async as vm">...</ng-container>`,
+})
+export class FeatureComponent extends BaseComponent implements OnInit {
+  private readonly _store = inject(FeatureStore);
+  readonly vm$ = this._store.vm$;
+
+  ngOnInit() {
+    this._store.initData();
+  }
+
+  onAction(data: SomeData) {
+    if (this.form.valid) {
+      this._store.processAction(data);
+    }
+  }
+}
+```
+
+### Layer 2: The store (`.store.ts`)
+
+- Manages the local UI state and triggers side effect
+
+```ts
+@Injectable()
+export class FeatureStore extends ComponentStore<FeatureStae> {
+  private readonly _api = inject(ApiService);
+
+  // 1. selectors (slices)
+  readonly data$ = this.select((s) => s.data);
+
+  // 2. ViewModel (object of view)
+  readonly vm$ = this.select(this.state$, (state) => ({ ...state }));
+
+  // 3. effect (brigde to API)
+  readonly processAction = this.effect<any>((origin$) =>
+    origin$.pipe(
+      tap(() => this.patchState({ loading: true })),
+      concatMap((val) => this._api.performCall(val)),
+      tap(() => this.patchState({ loading: false })),
+    ),
+  );
+}
+```
+
+### Layer 3: The API service `api.service.ts`
+
+- Converts TS methods into backend calls
+- Wraps firebase `httpsCallable` or HTTP client
+
+```ts
+@Injectable({ providedIn: "root" })
+export class ApiService {
+  private _functions = inject(Functions);
+
+  // generic wrapper for security/logging
+  private async call(action: string, data: any) {
+    const fn = httpsCallable(this._functions, "apiCall");
+    const result = await callable({ action, data });
+    return result.data;
+
+    // return (await fn({ action, data })).data;
+  }
+
+  doSomething(payload: any) {
+    return this.call("doSomething", payload);
+  }
+}
+```
+
+## Part 2. The backend
+
+### Layer 4: The entry point to cloud functions `index.ts`
+
+- Acts as a security guard
+- Validates auth and routes to logic
+
+```ts
+export const featureFunction = async (data: any, context: CallableRequest) => {
+  const auth = Container.get(AuthService).setContext(context);
+
+  if (!auth.isAuthenticated()) {
+    throw new HttpsError("unauthenticated", "stop!");
+
+    return await Container.get(FeatureUtilsService).execute(data);
+  }
+};
+```
