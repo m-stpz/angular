@@ -2,6 +2,8 @@
 
 ## Overview
 
+Component -> Store -> API Service -> Cloud function -> Services -> Repo -> DB
+
 ### Part 1: The frontend
 
 - Layer 1: component
@@ -64,7 +66,7 @@ await this._apiService.submitData(...)
 
 ### Layer 1: component (`.component.ts`)
 
-- Role: The "presenter"
+- The presenter
 - Handles user input and displays the `vm$`
 
 ```ts
@@ -91,6 +93,7 @@ export class FeatureComponent extends BaseComponent implements OnInit {
 
 ### Layer 2: The store (`.store.ts`)
 
+- The local memory
 - Manages the local UI state and triggers side effect
 
 ```ts
@@ -117,6 +120,7 @@ export class FeatureStore extends ComponentStore<FeatureStae> {
 
 ### Layer 3: The API service `api.service.ts`
 
+- The messenger
 - Converts TS methods into backend calls
 - Wraps firebase `httpsCallable` or HTTP client
 
@@ -144,7 +148,7 @@ export class ApiService {
 
 ### Layer 4: The entry point to cloud functions `index.ts`
 
-- Acts as a security guard
+- The security guard
 - Validates auth and routes to logic
 
 ```ts
@@ -158,3 +162,48 @@ export const featureFunction = async (data: any, context: CallableRequest) => {
   }
 };
 ```
+
+### Layer 5: The business logic service `.service.ts`
+
+- The brain
+- applies rules, updates models, triggers logs
+
+```ts
+@Service()
+export class FeatureUtilsService {
+  async execute(data: any) {
+    const repo = Container.get(FeatureRepository);
+    const existing = await repo.get({ orgId: data.orgId, id: data.id });
+
+    const updatedData = { ...existing, status: "DONE" };
+
+    await Promise.all([
+      repo.update(updatedData, ["status"]),
+      this.notifyUsers(data.orgId),
+      this.logicActivity("Feature updated"),
+    ]);
+  }
+}
+```
+
+### Layer 6: The repository (`.repository.ts`)
+
+- The librarian
+- Abstracts database paths and provides CRUD
+- Uses "Path properties" instead of hardcoded strings
+
+```ts
+export class FeatureRepository extends DataRepository<FeatureModel, PathProps> {
+  constructor(dataservice: DataService) {
+    super(FeatureModel, FeaturePathBuilder, dataservice);
+  }
+
+  // inherits: get(), find(), watch(), create(), update(), delete()
+}
+```
+
+## Part 3. The db
+
+- The memory
+- Document-based storage
+- Multi-tenancy via `/organizations/{orgId}/...` paths
