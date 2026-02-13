@@ -283,3 +283,68 @@ readonly vm$ = combineLatest({
   - handle user input (typing)
   - API calls
   - state update simultaneously
+
+```ts
+@Injectable()
+export class UserListStore extends ComponentStore<UserListState> {
+  private readonly _api = inject(ApiService);
+
+  // 1. the selectors (read) - all observables, they need to be subscribed
+  readonly users$ = this.select((s) => s.users);
+  readonly loading$ = this.select((s) => s.loading);
+  readonly query$ = this.select((s) => s.query);
+
+  // 2. the view model
+  readonly vm$ = this.select(
+    this.users$,
+    this.loading$,
+    this.query$,
+    (users, loading, query) => ({
+      users,
+      loading,
+      query,
+      hasResults: user.length > 0,
+      isEmpty: users.length === 0 && !loading && query !== "",
+    }),
+  );
+
+  constructor() {
+    // 3. initial state
+    super({ users: [], loading: false, query: "" });
+  }
+
+  // 4. the updaters (write) - sync write
+  readonly setQuery = this.updater((state, query: string) => ({
+    ...state,
+    query,
+  }));
+
+  // 5. the effect (RxJS powerhouse) - where they main RxJS live
+  readonly searchUsers = this.effect<string>((query$) =>
+    query$.pipe(
+      // 5.1 filter: don't trigger API if query is too short
+      filter((query) => query.length >= 2 || query.length === 0),
+
+      // 5.2 tap: trigger a "side effect" (UI loading) before the API starts
+      tap((query) => {
+        this.patchState({ loading: true, query });
+      }),
+
+      // 5.3 switchMap: if user types 'a', then 'b', cancel the former and continue with the latter
+      switchMap((query) =>
+        this._api.getUsers(query).pipe(
+          // tapResponse = tap + error handling
+          tapResponse(
+            (users) => this.patchState({ users, loading: false }), // what to do in success
+            (error) => {
+              // what to do in error
+              console.error(error);
+              this.patchState({ loading: false, users: [] });
+            },
+          ),
+        ),
+      ),
+    ),
+  );
+}
+```
