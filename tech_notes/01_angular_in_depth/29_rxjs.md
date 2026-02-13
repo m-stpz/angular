@@ -10,6 +10,14 @@
   - Standard variable: `x = 5` -> snapshot in time
   - Observable: `x$` -> a stream that now is 5, in 1 minute, 10, in an hour `Error`
 
+## Angular and RxJS
+
+- Angular was built from the ground up to be reactive
+  - HTTP Calls: the `HttpClient` returns Observables, not Promises
+  - Forms: `ReactiveForms` allows us to listen to every keystroke via `valueChange$`
+  - Routing: `ActivatedRoute` lets us watch for URL parameter changes as a stream
+  - State management: NgRx (legacy ng store) and ComponentStore are built on top of RxJS
+
 ## Concepts
 
 ### Observables: the data source
@@ -134,6 +142,9 @@ this.user$
 - `tap`: spy
   - Used to perform "side effects" without changing the data itself
   - e.g.: trigger loading a spinner before an api call
+- `tapResponse`: it's a special operator, used within NgRx ComponentStore context
+  - It's a "wrapper" that forces you to handle both the **Success** and **Error** of an API call
+  - Professional way to ensure the app never "hangs" on a loading spinner if the backend fails
 
 ### Higher-order mapping
 
@@ -150,3 +161,30 @@ this.user$
 
 - `exhaustMap`: ignore
   - It ignores new inputs until the current one is finished
+  - Good for: submit buttons (it ignores the second click until the first save is done)
+
+### Combination operators
+
+- `withLatestFrom`: the "need extra info"
+  - used when one stream triggers an action, but we need the current value from another stream
+- `combineLatest`: the "sync"
+  - waits for all streams to have at least one value, then emits them together as an array/object
+
+### Lifecycle operators
+
+- `takeUntil(notifier$)`: the most important operator for preventing memory leaks
+  - Use it with a `destroy$` subject in the component to automatically unsubscribe when the user leaves the page
+
+- `shareReplay(1)`: turns a "cold" observable (start fresh for every subscriber) into a "hot" one (shares the last result)
+  - Prevents the API from being called twice if you use the `async` pipe in two places in your HTML
+
+### Summary
+
+| If you want to...         | Operator        | Layer            |
+| ------------------------- | --------------- | ---------------- |
+| Change the data shape     | `map`           | Store/repository |
+| Trigger a loading spinner | `tap`           | store effect     |
+| Call an API (cancel old ) | `switchMap`     | store effect     |
+| Call an API (queue them)  | `concatMap`     | store effect     |
+| Combine slices for UI     | `combineLatest` | ViewModel        |
+| Prevent memory leaks      | `takeUntil`     | Component        |
