@@ -25,6 +25,22 @@
 - They represent a stream of data over time
 - It needs to be subscribed to do something
 
+#### Observables vs. Promises
+
+- Promise: it's a "one-time deal"
+  - You ask for data, you get it, it's over
+  - It's like a one-night stand
+- Observable: it's a "lifetime subscription"
+  - You subscribe and keep receiving the value over time
+  - It's like a marriage
+
+| Feature      | Promise            | Observable (RxJS)                         |
+| ------------ | ------------------ | ----------------------------------------- |
+| Values       | Emites one value   | Emits multiple values over time           |
+| Cancellation | Can't be cancelled | Cancellable (crucial for "search" inputs) |
+| Operators    | None               | 100+ operators for complex logic          |
+| Timing       | Always async       | Can be sync and async                     |
+
 ### Subscriptions: the consumer of the data
 
 - They represent the execution of an Observable, crucial for managing the lifecycle and canceling async tasks
@@ -139,12 +155,50 @@ this.user$
 
 - `map`: modifier
   - It changes the data, like standard JS
+  - Takes the data and changes its shape, type, or value
+  - input: raw object
+  - output: a specific piece or a formatted version of that object
+
+```ts
+// map = modification
+// eg: extract just the 'name' from the User object
+
+this.user$
+  .pipe(map((user) => user.name.toUpperCase()))
+  .subscribe((name) => console.log(name));
+
+// result = "John Doe" instea of {id: 1, name:"John Doe"}
+```
+
 - `tap`: spy
   - Used to perform "side effects" without changing the data itself
+  - Doesn't change the data
   - e.g.: trigger loading a spinner before an api call
+  - input: data
+  - output: the exact data, untouched
+
+```ts
+this.data$
+  .pipe(
+    // tap = deals with side effects
+    tap((data) => console.log("Data arrived from db: ", data)),
+    tap(() => (this.loading = false)),
+  )
+  .subscribe();
+```
+
 - `tapResponse`: it's a special operator, used within NgRx ComponentStore context
   - It's a "wrapper" that forces you to handle both the **Success** and **Error** of an API call
   - Professional way to ensure the app never "hangs" on a loading spinner if the backend fails
+
+- `filter`: Only lets data through if it meets a certain condition
+  - input: any data
+  - output: the same data (if true) | nothing (if false)
+
+```ts
+// only allow the stream to continue if the search is long enough
+this.searchTerm$.pipe(filter((term) => term.length > 3)).subscribe();
+```
 
 ### Higher-order mapping
 
@@ -155,9 +209,20 @@ this.user$
   - If new value arrives, cancels the previous inner observable
   - Good for: search bars, tab switching
 
+```ts
+// if user clicks twice false, cancel the 1st api call and start the second
+this.refreshClick$.pipe(switchMap(() => this.api.getLatestData())).subscribe();
+```
+
 - `concatMap`: queue
   - It waits for the previous call to finish before starting the next one
+  - Ensures order and prevents overlapping operations
   - Good for: save operations where order matters
+
+```ts
+// save item 1, wait, then save item 2
+this.saveRequests$.pipe(concatMap(item) => this.api.save(item)).subscribe();
+```
 
 - `exhaustMap`: ignore
   - It ignores new inputs until the current one is finished
@@ -167,8 +232,30 @@ this.user$
 
 - `withLatestFrom`: the "need extra info"
   - used when one stream triggers an action, but we need the current value from another stream
+  - combines the trigger with a snapshot of other data
+
+```ts
+// user clicks "submits", then it grabs the "form value" to send to the api
+this.submitClick$
+  .pipe(
+    withLatestFrom(this.formValue$),
+    map(([click, form]) => form), // discard the click and keep the form data
+  )
+  .subscribe((data) => this.api.send(data));
+```
+
 - `combineLatest`: the "sync"
   - waits for all streams to have at least one value, then emits them together as an array/object
+  - turns multiple individual streams into a single ViewModel object
+
+```ts
+// combine 3 status streams into 1 UI object
+readonly vm$ = combineLatest({
+  users: this.users$,
+  loading: this.loading$,
+  error: this.error$
+})
+```
 
 ### Lifecycle operators
 
@@ -180,11 +267,19 @@ this.user$
 
 ### Summary
 
-| If you want to...         | Operator        | Layer            |
-| ------------------------- | --------------- | ---------------- |
-| Change the data shape     | `map`           | Store/repository |
-| Trigger a loading spinner | `tap`           | store effect     |
-| Call an API (cancel old ) | `switchMap`     | store effect     |
-| Call an API (queue them)  | `concatMap`     | store effect     |
-| Combine slices for UI     | `combineLatest` | ViewModel        |
-| Prevent memory leaks      | `takeUntil`     | Component        |
+| If you want to...                          | Operator        | Practical use case                     | Layer            |
+| ------------------------------------------ | --------------- | -------------------------------------- | ---------------- |
+| Change the data shape                      | `map`           | Formatting dates, names, prices        | Store/repository |
+| Filter out data based on certain condition | `filter`        | Ignoring empty search results          |
+| Trigger a loading spinner                  | `tap`           | Turning off a spinner after api result | store effect     |
+| Call an API (cancel old )                  | `switchMap`     | Search-as-you-type inputs              | store effect     |
+| Call an API (queue them)                   | `concatMap`     | Sequential database saves              | store effect     |
+| Combine slices for UI                      | `combineLatest` | Creating the `vm$` object              | ViewModel        |
+| Prevent memory leaks                       | `takeUntil`     |                                        | Component        |
+
+## Real-world example
+
+- On a searchable user list store, we need to:
+  - handle user input (typing)
+  - API calls
+  - state update simultaneously
