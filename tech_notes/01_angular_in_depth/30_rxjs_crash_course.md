@@ -102,6 +102,13 @@ const observable = new Observable((subscriber) => {
     // getting the average age for 'active' users
     return value.reduce((sum, user) => sum + user.age, 0) / value.length;
   }),
+  map((value) => {
+    if (value < 18) {
+      throw new Error("Average age is too young");
+    } else {
+      return value;
+    }
+  }),
 );
 
 const observer = {
@@ -121,3 +128,5 @@ observable.subscribe(observer); // connecting to observer to the observable
 // output: observer got a value of 10
 // ...
 ```
+
+## Operators
