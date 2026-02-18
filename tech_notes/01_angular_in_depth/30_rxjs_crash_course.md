@@ -66,3 +66,58 @@ observable.subscribe(observer); // connecting to observer to the observable
 // output: observer got a value of 10
 // ...
 ```
+
+## Pipes
+
+```ts
+const { Observable } = require("rxjs");
+
+const users = {
+  data: [
+    { status: "active", age: 29 },
+    { status: "inactive", age: 53 },
+    { status: "active", age: 66 },
+    { status: "inactive", age: 17 },
+  ],
+};
+
+const observable = new Observable((subscriber) => {
+  subscriber.next(users);
+}).pipe(
+  // now the data passes through here
+  // the last operator sends it to the observer
+  map((value) => {
+    // 1. runs this
+    // how we want to operate on this operator
+    // small operators that do a small thing
+    // this one will simply 'unpack' the data
+    return value.data;
+  }),
+  // sends the data 'down'
+  map((value) => {
+    // 2. runs this
+    return value.filter((user) => user.status === "active");
+  }),
+  map((value) => {
+    // getting the average age for 'active' users
+    return value.reduce((sum, user) => sum + user.age, 0) / value.length;
+  }),
+);
+
+const observer = {
+  next: (value) => {
+    console.log("observer got value of ", value);
+  }, // all is fine and well
+  error: (err) => {
+    console.log("observer got an error of", error);
+  },
+  complete: () => {
+    console.log("observer got completed");
+  }, // when it's done
+};
+
+observable.subscribe(observer); // connecting to observer to the observable
+
+// output: observer got a value of 10
+// ...
+```
